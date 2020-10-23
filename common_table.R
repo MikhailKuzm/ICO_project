@@ -25,4 +25,8 @@ new_table <- full_join(x, Country1, by = "Country")
 
 ###match shape file names and new table names
 ico_common <- new_table[order(match(new_table$Country, my_shape$NAME)),]
+names(ico_common) <-tolower(names(ico_common))
 remove(new_table, x, names, temp, Country1)
+                                            
+
+
