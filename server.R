@@ -16,7 +16,7 @@ pal1 <- reactive({
                                domain = ico_common$direct_application_of_securities_legislation,
                                na.color = "#808080")
       }else{ 
-   pal <- colorFactor(palette = c("green", "blue"), 
+   pal <- colorFactor(palette = c("green", "red"), 
                       domain = ico_common$payment_for_goods_and_services_in_cryptocurrency,
                       na.color = "#808080")
 }
@@ -60,12 +60,34 @@ labels <- reactive ({
   }
 })
 
-
                         #### Draw map ####
     output$mymap <- renderLeaflet({
         leaflet() %>%
         setView(lat=52, lng=34 , zoom=2) %>%
-        addTiles() %>% 
+        addTiles(group='Основная')%>%
+        addProviderTiles('Stamen.Watercolor',group='Пиратская')%>%
+        addProviderTiles('CartoDB.PositronNoLabels',group='Контурная чистая') %>%
+        addProviderTiles('Esri.WorldStreetMap',group='Физическая (рельеф)') %>%
+        addProviderTiles('Esri.DeLorme',group='Физическая (пиксель)') %>%
+        addProviderTiles('Esri.OceanBasemap',group='Морская') %>%
+        addProviderTiles('Esri.NatGeoWorldMap',group='Горная') %>%
+        addProviderTiles('CartoDB.Positron',group='Контурная с подписями') %>%
+        addProviderTiles('CartoDB.PositronNoLabels',group='Контурная чистая') %>%
+        addProviderTiles('Stamen.TonerLite', group='Белая') %>%
+        
+        addLayersControl(
+          baseGroups = c( 'Морская',
+                          'Пиратская',
+                         'Контурная чистая',
+                         'Физическая (рельеф)',
+                         'Физическая (пиксель)',
+                        
+                         'Горная',
+                         'Контурная с подписями',
+                         'Контурная чистая',
+                         "Белая"), 
+          options = layersControlOptions(collapsed = TRUE)) %>%
+       
             addPolygons(data = my_shape, 
                         fill = "white",
                         stroke=TRUE, 
@@ -84,7 +106,10 @@ labels <- reactive ({
                           style = list("font-weight" = "normal", padding = "3px 8px"), 
                           textsize = "13px", 
                           direction = "auto"),
-                        layerId = ~NAME)
+                        layerId = ~NAME) %>%
+        addLegend("bottomright", pal = pal1(), 
+                  values = col_type(), 
+                  opacity = 0.2)
 
     })
     
