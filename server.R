@@ -76,12 +76,11 @@ labels <- reactive ({
         addProviderTiles('Stamen.TonerLite', group='Белая') %>%
         
         addLayersControl(
-          baseGroups = c( 'Морская',
+          baseGroups = c('Морская',
                           'Пиратская',
                          'Контурная чистая',
                          'Физическая (рельеф)',
                          'Физическая (пиксель)',
-                        
                          'Горная',
                          'Контурная с подписями',
                          'Контурная чистая',
@@ -110,7 +109,6 @@ labels <- reactive ({
         addLegend("bottomright", pal = pal1(), 
                   values = col_type(), 
                   opacity = 0.2)
-
     })
     
                   #### Make text under map (based on click on map) ####
@@ -130,7 +128,6 @@ labels <- reactive ({
                        "<p>",  "<b>","Определение токенов-активов:","</b>",
                        ico_common[ico_common$country == p$id, "definition_assets"], "</p>"
                        )
-      
       information <- lapply(information, HTML)
       
    output$text <- renderUI({
