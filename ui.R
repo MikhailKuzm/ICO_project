@@ -1,8 +1,8 @@
 
-ui <- dashboardPage(
+ui <- dashboardPage(skin = "green",
     dashboardHeader(title = "Map"),
     dashboardSidebar(
-        width = 250,
+        width = 240,
         sidebarMenu(
             menuItem("Map", tabName = "dashboard", icon = icon("th"),
                      menuSubItem(icon = NULL,
@@ -15,9 +15,11 @@ ui <- dashboardPage(
     dashboardBody(
 tabItem(tabName = "dashboard",
          fluidRow(
-        box(leafletOutput("mymap"),
+        box(leafletOutput("mymap", height=380),
             width = 12,
-            height = "380px")
+            height = "400px"),
+        box(uiOutput("text"),
+            width = 12)
             )
     )
 )
