@@ -1,17 +1,14 @@
 
-
 # Define server logic required to draw a histogram
 server <- function(input, output) {
     
                         #### Define pal function for coloring  map####
 pal1 <- reactive({ 
     if (input$pal_but == 1) {
-
         pal <- colorFactor(palette = c("green", "red"),
                            domain = ico_common$mining_is_regulated,
                            na.color = "#808080")
-    }else{
-        if (input$pal_but == 2) { 
+    }else if (input$pal_but == 2) {
             pal <- colorFactor(palette = c("green", "red"),
                                domain = ico_common$direct_application_of_securities_legislation,
                                na.color = "#808080")
@@ -20,20 +17,16 @@ pal1 <- reactive({
                       domain = ico_common$payment_for_goods_and_services_in_cryptocurrency,
                       na.color = "#808080")
 }
-}
  pal
 })
- 
                         #### Make argument for pal() function ####
 col_type <- reactive({
   if (input$pal_but == 1){
     x <- ico_common$mining_is_regulated
-  }else{
-    if (input$pal_but == 2){
+  } else if (input$pal_but == 2){
       x <- ico_common$direct_application_of_securities_legislation
     }else{
     x <- ico_common$direct_application_of_securities_legislation
-  }
   }
   x
 })
@@ -45,8 +38,7 @@ labels <- reactive ({
                  "<p>", "Регулирование Майнинга: ",
                  ico_common$mining_is_regulated, "</p>",
                  sep = "")
-  }else{
-     if (input$pal_but == 2){
+  } else if (input$pal_but == 2){
       paste ("<p>", ico_common$country, "</p>",
              "<p>", "Применение законодательства о цб: ",
              ico_common$direct_application_of_securities_legislation, "</p>",
@@ -57,7 +49,6 @@ labels <- reactive ({
               ico_common$payment_for_goods_and_services_in_cryptocurrency, "</p>",
               sep = "")
      }
-  }
 })
 
                         #### Draw map ####
@@ -86,12 +77,11 @@ labels <- reactive ({
                          'Контурная чистая',
                          "Белая"), 
           options = layersControlOptions(collapsed = TRUE)) %>%
-       
             addPolygons(data = my_shape, 
                         fill = "white",
                         stroke=TRUE, 
                         weight = 0.3,
-                        smoothFactor = 0.5,
+                        smoothFactor = 0.9,
                         color = 'white',
                         fillOpacity = 0.2,
                         fillColor = pal1()(col_type()),
@@ -105,7 +95,7 @@ labels <- reactive ({
                           style = list("font-weight" = "normal", padding = "3px 8px"), 
                           textsize = "13px", 
                           direction = "auto"),
-                        layerId = ~NAME) %>%
+                        layerId = ~NAME_RU) %>%
         addLegend("bottomright", pal = pal1(), 
                   values = col_type(), 
                   opacity = 0.2)
@@ -134,7 +124,6 @@ labels <- reactive ({
      information 
          })
     })
-
 }
 
 
