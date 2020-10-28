@@ -104,25 +104,29 @@ labels <- reactive ({
                   #### Make text under map (based on click on map) ####
  observeEvent(input$mymap_shape_click, {
   p <- input$mymap_shape_click
-  information <- paste("<p>","<b>","Страна:","</b>", p$id,"</p>",
-                       "<p>", "<b>","Название утилити токена:","</b>", 
-                        ico_common[ico_common$country == p$id, "name_utility"], "</p>",
-                        "<p>", "<b>","Название криптовалют:", "</b>",
-                        ico_common[ico_common$country == p$id, "name_cryptocurrency"], "</p>",
-                        "<p>", "<b>","Название токенов-активов:","</b>",
-                        ico_common[ico_common$country == p$id, "name_assets"], "</p>",
-                           "<p>", "<b>","Определение утилити токена:","</b>",
-                        ico_common[ico_common$country == p$id, "definition_utility"],"</p>", 
-                       "<p>", "<b>","Определение криптовалют:","</b>",
-                        ico_common[ico_common$country == p$id, "definition_cryptocurrency"], "</p>", 
-                       "<p>",  "<b>","Определение токенов-активов:","</b>",
-                       ico_common[ico_common$country == p$id, "definition_assets"], "</p>"
-                       )
-      information <- lapply(information, HTML)
+  information1 <- paste("<p>", "<b>", p$id,"</b>","</p>")
+  information2 <- paste("<p>", "<b>",'Название утилити токенов:',"</b>", 
+          ico_common[ico_common$country == p$id, "name_utility"][1], "</p>",
+          "<p>",  "<b>", "Название криптовалют:","</b>",
+          ico_common[ico_common$country == p$id, "name_cryptocurrency"][1], "</p>",
+          "<p>", "<b>", "Название токенов активов:","</b>",
+          ico_common[ico_common$country == p$id, "name_assets"][1], "</p>")
+         
+          # "<p>", ico_common[ico_common$country == p$id, "definition_utility"][1],"</p>",
+          # "<p>", ico_common[ico_common$country == p$id, "definition_cryptocurrency"][1], "</p>") 
+            #  "<p>",  "<b>","Определение токенов-активов:","</b>",
+              #  ico_common[ico_common$country == p$id, "definition_assets"][1], "</p>"
+                      # )
+      information1 <- lapply(information1, HTML)               
+      information2 <- lapply(information2, HTML)
       
-   output$text <- renderUI({
-     information 
+   output$text1 <- renderUI({
+     information1 
          })
+   output$text2 <- renderUI({
+     information2 
+   })
+  
     })
 }
 
