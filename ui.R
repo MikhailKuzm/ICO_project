@@ -4,7 +4,7 @@ ui <- dashboardPage(skin = "green",
     dashboardSidebar(
         width = 240,
         sidebarMenu(
-            menuItem("Карта", tabName = "dashboard", icon = icon("th"),
+            menuItem("Карта", tabName = "dashboard", icon = icon("globe"),
                      menuSubItem(icon = NULL,
                                  selectInput("pal_but", label = h5("Раскрасить страны по:"),
                                  choices = list("Регулирование Майнинга" = 1,
@@ -14,7 +14,7 @@ ui <- dashboardPage(skin = "green",
         )
         
         )),
-    dashboardBody(
+    dashboardBody(useShinyjs(),
 tabItem(tabName = "dashboard",
         fluidRow(
         box(leafletOutput("mymap", height=380),
@@ -22,9 +22,25 @@ tabItem(tabName = "dashboard",
             height = "400px"),
         fluidPage(align = "center",
         uiOutput("text1")),
-        box(uiOutput("text2"),
-            background = "light-blue",
-            width = 12)
+        actionButton("button1", label = "Названия цифровых активов", width = '100%',
+                     class = "btn-success",block = TRUE, icon = icon("info"),
+                     style="color: #fff;"),
+        div(id='hello',
+        fluidRow(column(4, align="center",
+                        uiOutput("text2"), 
+                        tags$style(type="text/css", "#text2 { height: 30px; width: 110%;
+                                   text-align:center; font-size: 15px;}")
+        ),
+                column(4, align="center",
+                        uiOutput("text3"),
+                        tags$style(type="text/css", "#text3 { height: 50px; width: 100%;
+                                   text-align:center; font-size: 15px; }")
+        ),
+                column(4, align="center",
+                        uiOutput("text4"),
+                        tags$style(type="text/css", "#text4 { height: 50px; width: 100%;
+                                   text-align:center; font-size: 15px;}")
+        ))) 
 )
 )
 )
