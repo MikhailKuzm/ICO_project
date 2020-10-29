@@ -1,7 +1,7 @@
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-    
+  
                         #### Define pal function for coloring  map####
 pal1 <- reactive({ 
     if (input$pal_but == 1) {
@@ -102,16 +102,19 @@ labels <- reactive ({
     })
     
                   #### Make text under map (based on click on map) ####
- observeEvent(input$mymap_shape_click, {
+    
+    observeEvent(input$mymap_shape_click, {
   p <- input$mymap_shape_click
   information1 <- paste("<p>", "<b>", p$id,"</b>","</p>")
-  information2 <- paste("<p>", "<b>",'Название утилити токенов:',"</b>", 
-          ico_common[ico_common$country == p$id, "name_utility"][1], "</p>",
-          "<p>",  "<b>", "Название криптовалют:","</b>",
-          ico_common[ico_common$country == p$id, "name_cryptocurrency"][1], "</p>",
-          "<p>", "<b>", "Название токенов активов:","</b>",
+  information2 <- paste("<p>", "<b>",'Название утилити токенов',"</b>",br(), 
+          ico_common[ico_common$country == p$id, "name_utility"][1], "</p>")
+
+  information3 <- paste("<p>",  "<b>", "Название криптовалют","</b>", br(),
+          ico_common[ico_common$country == p$id, "name_cryptocurrency"][1], "</p>")
+  
+  information4 <- paste("<p>", "<b>", "Название токенов активов","</b>",br(),
           ico_common[ico_common$country == p$id, "name_assets"][1], "</p>")
-         
+  
           # "<p>", ico_common[ico_common$country == p$id, "definition_utility"][1],"</p>",
           # "<p>", ico_common[ico_common$country == p$id, "definition_cryptocurrency"][1], "</p>") 
             #  "<p>",  "<b>","Определение токенов-активов:","</b>",
@@ -119,14 +122,26 @@ labels <- reactive ({
                       # )
       information1 <- lapply(information1, HTML)               
       information2 <- lapply(information2, HTML)
+      information3 <- lapply(information3, HTML)
+      information4 <- lapply(information4, HTML)
       
    output$text1 <- renderUI({
-     information1 
+     information1
          })
    output$text2 <- renderUI({
      information2 
    })
-  
+   output$text3 <- renderUI({
+     information3 
+   })
+   output$text4 <- renderUI({
+     information4 
+   })
+   
+   })
+                      ####buttons for showing text under map ####
+    observeEvent(input$button1, {
+      toggle("hello", animType = "slide", anim = TRUE, time = 0.5)
     })
 }
 
