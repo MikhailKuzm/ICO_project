@@ -101,8 +101,8 @@ labels <- reactive ({
                   opacity = 0.2)
     })
     
-                  #### Make text under map (based on click on map) ####
     
+                  #### Make text under map (based on click on map) ####
     observeEvent(input$mymap_shape_click, {
   p <- input$mymap_shape_click
   information1 <- paste("<p>", "<b>", p$id,"</b>","</p>")
@@ -124,11 +124,16 @@ labels <- reactive ({
   information7 <- paste("<p>", "<b>", "Токены активы","</b>",br(),
                         ico_common[ico_common$country == p$id, "legal_status_assets"][1], "</p>")
   
-          # "<p>", ico_common[ico_common$country == p$id, "definition_utility"][1],"</p>",
-          # "<p>", ico_common[ico_common$country == p$id, "definition_cryptocurrency"][1], "</p>") 
-            #  "<p>",  "<b>","Определение токенов-активов:","</b>",
-              #  ico_common[ico_common$country == p$id, "definition_assets"][1], "</p>"
-                      # )
+  information8 <- paste(ico_applicable[ico_applicable$country == p$id, "clause_of_the_applicable_law"][1])
+  
+  information9 <- paste(ico_applicable[ico_applicable$country == p$id, "personal_statut_of_invesor"][1])
+  
+  information10 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_utility_issuance"][1])
+  
+  information11 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_cryptocurrency_issuance"][1])
+  
+  information12 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_assets_issuance"][1])
+  
       information1 <- lapply(information1, HTML)               
       information2 <- lapply(information2, HTML)
       information3 <- lapply(information3, HTML)
@@ -136,6 +141,8 @@ labels <- reactive ({
       information5 <- lapply(information5, HTML)
       information6 <- lapply(information6, HTML)
       information7 <- lapply(information7, HTML)
+     
+      
       
    output$text1 <- renderUI({
      information1
@@ -158,6 +165,22 @@ labels <- reactive ({
    output$text7 <- renderUI({
      information7 
    })
+   output$text8 <- renderUI({
+     information8 
+   })
+   output$text9 <- renderUI({
+     information9 
+   })
+   output$text10 <- renderUI({
+     information10 
+   })
+   output$text11 <- renderUI({
+     information11 
+   })
+   output$text12 <- renderUI({
+     information12 
+   })
+   
    })
                                 
     
@@ -187,6 +210,16 @@ labels <- reactive ({
                       #### Second button for showing text under map ####
     observeEvent(input$button2,  {
       toggle("second", animType = "slide", anim = TRUE, time = 0.5)
+    })
+    
+    observeEvent(input$button3,  {
+      toggle("third", animType = "slide", anim = TRUE, time = 0.5)
+    })
+    observeEvent(input$button3_1,  {
+      toggle("third_1", animType = "slide", anim = TRUE, time = 0.5)
+    })
+    observeEvent(input$button3_2,  {
+      toggle("third_2", animType = "slide", anim = TRUE, time = 0.5)
     })
 }
 
