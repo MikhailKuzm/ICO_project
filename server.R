@@ -26,7 +26,7 @@ col_type <- reactive({
   } else if (input$pal_but == 2){
       x <- ico_common$direct_application_of_securities_legislation
     }else{
-    x <- ico_common$direct_application_of_securities_legislation
+    x <- ico_common$payment_for_goods_and_services_in_cryptocurrency
   }
   x
 })
@@ -115,6 +115,15 @@ labels <- reactive ({
   information4 <- paste("<p>", "<b>", "Название токенов активов","</b>",br(),
           ico_common[ico_common$country == p$id, "name_assets"][1], "</p>")
   
+  information5 <- paste("<p>", "<b>", "Утилити токены","</b>",br(),
+                        ico_common[ico_common$country == p$id, "legal_status_utility"][1], "</p>")
+  
+  information6 <- paste("<p>", "<b>", "Криптовалюта","</b>",br(),
+                        ico_common[ico_common$country == p$id, "legal_status_cryptocurrency"][1], "</p>")
+  
+  information7 <- paste("<p>", "<b>", "Токены активы","</b>",br(),
+                        ico_common[ico_common$country == p$id, "legal_status_assets"][1], "</p>")
+  
           # "<p>", ico_common[ico_common$country == p$id, "definition_utility"][1],"</p>",
           # "<p>", ico_common[ico_common$country == p$id, "definition_cryptocurrency"][1], "</p>") 
             #  "<p>",  "<b>","Определение токенов-активов:","</b>",
@@ -124,6 +133,9 @@ labels <- reactive ({
       information2 <- lapply(information2, HTML)
       information3 <- lapply(information3, HTML)
       information4 <- lapply(information4, HTML)
+      information5 <- lapply(information5, HTML)
+      information6 <- lapply(information6, HTML)
+      information7 <- lapply(information7, HTML)
       
    output$text1 <- renderUI({
      information1
@@ -137,11 +149,42 @@ labels <- reactive ({
    output$text4 <- renderUI({
      information4 
    })
-   
+   output$text5 <- renderUI({
+     information5 
    })
-                      ####buttons for showing text under map ####
-    observeEvent(input$button1, {
-      toggle("hello", animType = "slide", anim = TRUE, time = 0.5)
+   output$text6 <- renderUI({
+     information6 
+   })
+   output$text7 <- renderUI({
+     information7 
+   })
+   })
+    
+    x <- reactive({
+      ifelse (is.null(input$mymap_shape_click), 0, 1)
+    })
+                      
+                        #### Hide buttons ####
+    # observe({
+    #   shinyjs::hide("button1")
+    #   if(x())
+    #     shinyjs::show("button1")
+    # })
+    # 
+    # observe({
+    #   shinyjs::hide("button2")
+    #   if(x())
+    #   shinyjs::show("button2")
+    # })
+    
+                      #### First button for showing text under map ####
+    
+    observeEvent(input$button1,  {
+      toggle("first", animType = "slide", anim = TRUE, time = 0.5)
+    })
+                      #### Second button for showing text under map ####
+    observeEvent(input$button2,  {
+      toggle("second", animType = "slide", anim = TRUE, time = 0.5)
     })
 }
 
