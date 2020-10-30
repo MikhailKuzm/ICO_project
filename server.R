@@ -159,12 +159,14 @@ labels <- reactive ({
      information7 
    })
    })
+                                
     
-    x <- reactive({
-      ifelse (is.null(input$mymap_shape_click), 0, 1)
-    })
+                                 #### Hide buttons until click on map####
+    # x <- reactive({
+    #   ifelse (is.null(input$mymap_shape_click), 0, 1)
+    # })
                       
-                        #### Hide buttons ####
+                       
     # observe({
     #   shinyjs::hide("button1")
     #   if(x())

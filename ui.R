@@ -13,6 +13,8 @@ ui <- dashboardPage(skin = "green",
                                  selected = 1))
         )
         )),
+    
+                                        #### Main Body ####
     dashboardBody(useShinyjs(),
 tabItem(tabName = "dashboard",
         fluidRow(
@@ -22,7 +24,7 @@ tabItem(tabName = "dashboard",
         fluidPage(align = "center",
         uiOutput("text1"),
         
-                            #### First button under text ####
+                                     #### First button under text ####
         
         actionButton("button1", label = "Названия цифровых активов", width = '100%',
                      class = "btn-success", icon = icon("info"),
@@ -44,7 +46,7 @@ tabItem(tabName = "dashboard",
                                    text-align:center; font-size: 15px;}"))))),
         
         
-                                         ### Second button ####
+                                         #### Second button ####
         actionButton("button2", label = "Правовой статус", width = '100%',
                      class = "btn-success", icon = icon("edit"),
                      style="color: #fff;"),
