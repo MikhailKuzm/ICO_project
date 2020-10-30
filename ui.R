@@ -31,7 +31,7 @@ tabItem(tabName = "dashboard",
                      style="color: #fff;"),
         shinyjs::hidden(
         div(id='first',
-        fluidRow(align = "center",
+    fluidRow(align = "center",
                  column(4, align="center",
                         uiOutput("text2"), 
                         tags$style(type="text/css", "#text2 { height: 30px; width: 100%;
@@ -52,7 +52,7 @@ tabItem(tabName = "dashboard",
                      style="color: #fff;"),
         shinyjs::hidden(
         div(id='second',
-        fluidRow(column(4, align="center",
+    fluidRow(column(4, align="center",
                        uiOutput("text5"),
                        tags$style(type="text/css", "#text5 { height: 50px; width: 100%;
                                    text-align:center; font-size: 15px;}")),
@@ -63,6 +63,35 @@ tabItem(tabName = "dashboard",
                 column(4, align="center",
                        uiOutput("text7"),
                        tags$style(type="text/css", "#text7 { height: 50px; width: 100%;
+                                   text-align:center; font-size: 15px;}"))))),
+
+                                            #### Third button ####
+        actionButton("button3", label = "Применимое право", width = '100%',
+             class = "btn-success", icon = icon("edit"),
+             style="color: #fff;"),
+    shinyjs::hidden(
+    div(id='third',
+        actionButton("button3_1", label = "Указание на применимое право", width = '50%',
+                     class = "btn-success", icon = icon("edit"),
+                     style="color: #fff; text-align:center; float:left"),
+        actionButton("button3_2", label = "Личный статут инвестора", width = '50%',
+                     class = "btn-success", icon = icon("edit"),
+                     style="color: #fff; text-align:center; float:right"),
+        )), 
+                            ### Text for third button
+    flowLayout(
+        shinyjs::hidden(
+        div(id='third_1',
+        column(6, 
+                        uiOutput("text8"),
+                        tags$style(type="text/css", "#text8 { height: 50px; width: 50px;
+                                   text-align:center; font-size: 15px;}")))
+),
+shinyjs::hidden(
+        div(id='third_2',
+            column(6, 
+                    uiOutput("text9"),
+                    tags$style(type="text/css", "#text9 { height: 50px; width: 370px;
                                    text-align:center; font-size: 15px;}")))))
 )
 )
@@ -70,4 +99,3 @@ tabItem(tabName = "dashboard",
 )
 
 
-        
