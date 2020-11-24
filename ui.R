@@ -1,27 +1,34 @@
 
-ui <- dashboardPage(skin = "green",
-    dashboardHeader(title = "Map"),
+ui <-dashboardPagePlus(skin = "blue-light",
+    dashboardHeader(title = "Меню"),
     dashboardSidebar(
         width = 240,
         sidebarMenu(
-            menuItem("Карта", tabName = "dashboard", icon = icon("globe"),
-                     menuSubItem(icon = NULL,
-                                 selectInput("pal_but", label = h5("Раскрасить страны по:"),
-                                 choices = list("Регулирование Майнинга" = 1,
-                                                "Применение законодательства о цб" = 2, 
-                                                "Использование криптовалют в потребительских целях" = 3), 
-                                 selected = 1))
-        )
+            menuItem("Карта", tabName = "map", icon = icon("globe")
+        ),
+        menuItem("Сравнение", tabName = "compare", icon = icon("globe"))
         )),
-    
-                                        #### Main Body ####
-    dashboardBody(useShinyjs(),
-tabItem(tabName = "dashboard",
+                                        ### Main Body ###
+ dashboardBody(useShinyjs(),
+                                          #### Map ####
+tabItems(
+tabItem(tabName = "map",
+        gradientBox( title = "Раскрасить страны", 
+          icon = "fa fa-paint-brush",
+          dropdown_icon = "wrench",
+          gradientColor = "teal",
+          boxToolSize = "sm",
+          width = 12,
+          footer = selectInput("pal_but", label = "", width = "900px",
+                                choices = list("Регулирование Майнинга" = 1,
+                                               "Применение законодательства о цб" = 2, 
+                                               "Использование криптовалют в потребительских целях" = 3), 
+                                selected = 1)),
         fluidRow(
-        box(leafletOutput("mymap", height=380),
+          boxPlus(withSpinner(leafletOutput("mymap", height=380), type = 3),
             width = 12,
             height = "400px")),
-        fluidPage(align = "center",
+        fluidRow(align = "center",
         uiOutput("text1"),
         
                                      #### First button under text ####
@@ -69,33 +76,103 @@ tabItem(tabName = "dashboard",
         actionButton("button3", label = "Применимое право", width = '100%',
              class = "btn-success", icon = icon("edit"),
              style="color: #fff;"),
+    
     shinyjs::hidden(
     div(id='third',
-        actionButton("button3_1", label = "Указание на применимое право", width = '50%',
-                     class = "btn-success", icon = icon("edit"),
-                     style="color: #fff; text-align:center; float:left"),
-        actionButton("button3_2", label = "Личный статут инвестора", width = '50%',
-                     class = "btn-success", icon = icon("edit"),
-                     style="color: #fff; text-align:center; float:right"),
-        )), 
-                            ### Text for third button
-    flowLayout(
+        
+        box(width = 6,
+        actionButton("button3_1", label = "Указание на применимое право", 
+                     width = '100%',
+                     class = "btn-success", 
+                     style="color: #fff; text-align:center; float:center;
+                     font-size: 15px;"),
         shinyjs::hidden(
-        div(id='third_1',
-        column(6, 
-                        uiOutput("text8"),
-                        tags$style(type="text/css", "#text8 { height: 50px; width: 50px;
-                                   text-align:center; font-size: 15px;}")))
+          div(id='third_1',
+              column(6, 
+                     uiOutput("text8"),
+                     tags$style(type="text/css", "#text8 { height: 20px; 
+                                    width: 290px;
+                                   text-align:center; font-size: 15px;}")))),
+        
+        actionButton("button3_3", label = "Экстерриториальное прим. (утилити токены)", 
+                     width = '100%',
+                     class = "btn-success", 
+                     style="color: #fff; text-align:center; float:center;
+                     font-size: 14px;"),
+        shinyjs::hidden(
+          div(id='third_3',
+                column(6, 
+                       uiOutput("text10"),
+                       tags$style(type="text/css", "#text10 { height: 20px; 
+                                        width: 290px;
+                                        text-align:center; font-size: 15px;}")))),
+        
+        actionButton("button3_5", label = "Оборот токенов-активов", 
+                     width = '100%',
+                     class = "btn-success", 
+                     style="color: #fff; text-align:center; float:center"),
+        shinyjs::hidden(
+          div(id='third_5',
+                column(6, 
+                       uiOutput("text12"),
+                       tags$style(type="text/css", "#text12 { height: 20px; 
+                                  width: 290px;
+                                   text-align:center; font-size: 15px;}"))))),
+        
+        box(width = 6, 
+        actionButton("button3_2", label = "Выпуск утилити токенов", 
+                     width = '100%',
+                     class = "btn-success", 
+                    style="color: #fff;"),
+        shinyjs::hidden(
+            div(id='third_2',
+                column(6, 
+                              uiOutput("text9"),
+                              tags$style(type="text/css", "#text9 { height: 20px; 
+                                                width: 290px;
+                                               text-align:center; font-size: 15px;")))),
+        
+    actionButton("button3_4", label = "Оборот криптовалюты", 
+                 width = '100%',
+                 class = "btn-success",
+                 style="color: #fff; text-align:center"),
+    shinyjs::hidden(
+      div(id='third_4',
+          column(6, 
+                 uiOutput("text11"),
+                 tags$style(type="text/css", "#text11 { height: 20px; 
+                                  width: 290px;
+                                   text-align:center; font-size: 15px;}")))),
+    
+    actionButton("button3_6", label = "Экстерриториальное прим. (токены активы)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff; text-align:center;"),
+      shinyjs::hidden(
+        div(id='third_6',
+          column(6, 
+                 uiOutput("text13"),
+                 tags$style(type="text/css", "#text13 { height: 20px; 
+                                  width: 290px;
+                                  text-align:center; font-size: 15px;}")))))
+    )))
 ),
-shinyjs::hidden(
-        div(id='third_2',
-            column(6, 
-                    uiOutput("text9"),
-                    tags$style(type="text/css", "#text9 { height: 50px; width: 370px;
-                                   text-align:center; font-size: 15px;}")))))
+                                #### Comparison ####
+tabItem(tabName = "compare",
+        fluidRow(
+          column(12, HTML("<h1>", "First div", "/<h1>") )
 )
 )
 )
 )
+)
+
+
+
+
+
+
+
+
 
 
