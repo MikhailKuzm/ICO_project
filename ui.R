@@ -1,7 +1,11 @@
 
 ui <-dashboardPagePlus(skin = "blue-light",
-    dashboardHeader(title = "Меню"),
-    dashboardSidebar(
+    dashboardHeaderPlus(title = tagList(
+                          span(class = "logo-lg", "Меню"), 
+                          img(src = "https://image.flaticon.com/icons/svg/204/204074.svg")),
+                        enable_rightsidebar = TRUE,
+                        rightSidebarIcon = "gears"),
+sidebar = dashboardSidebar(
         width = 240,
         sidebarMenu(
             menuItem("Карта", tabName = "map", icon = icon("globe")
@@ -33,9 +37,10 @@ tabItem(tabName = "map",
         
                                      #### First button under text ####
         
-        actionButton("button1", label = "Названия цифровых активов", width = '100%',
+        actionButton("button1", 
+                     label = "Названия цифровых активов", width = '100%',
                      class = "btn-success", icon = icon("info"),
-                     style="color: #fff;"),
+                     style="color: #fff; background-color:#39CCCC;"),
         shinyjs::hidden(
         div(id='first',
     fluidRow(align = "center",
@@ -56,7 +61,7 @@ tabItem(tabName = "map",
                                          #### Second button ####
         actionButton("button2", label = "Правовой статус", width = '100%',
                      class = "btn-success", icon = icon("edit"),
-                     style="color: #fff;"),
+                     style="color: #fff;background-color:#39CCCC;"),
         shinyjs::hidden(
         div(id='second',
     fluidRow(column(4, align="center",
@@ -75,7 +80,7 @@ tabItem(tabName = "map",
                                             #### Third button ####
         actionButton("button3", label = "Применимое право", width = '100%',
              class = "btn-success", icon = icon("edit"),
-             style="color: #fff;"),
+             style="color: #fff;background-color:#39CCCC;"),
     
     shinyjs::hidden(
     div(id='third',
@@ -159,9 +164,20 @@ tabItem(tabName = "map",
 ),
                                 #### Comparison ####
 tabItem(tabName = "compare",
-        fluidRow(
-          column(12, HTML("<h1>", "First div", "/<h1>") )
-)
+        boxPad(
+          color = "green",
+          descriptionBlock(
+            header = "8390", 
+            text = "VISITS", 
+            rightBorder = FALSE,
+            marginBottom = TRUE
+          ),
+          descriptionBlock(
+            header = "30%", 
+            text = "REFERRALS", 
+            rightBorder = FALSE,
+            marginBottom = TRUE
+          ))
 )
 )
 )
