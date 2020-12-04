@@ -1,6 +1,6 @@
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
   
                         #### Define pal function for coloring  map####
 pal1 <- reactive({ 
@@ -126,13 +126,25 @@ labels <- reactive ({
   
   information8 <- paste(ico_applicable[ico_applicable$country == p$id, "clause_of_the_applicable_law"][1])
   
-  information9 <- paste(ico_applicable[ico_applicable$country == p$id, "personal_statut_of_invesor"][1])
+  information9 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_utility_issuance"][1])
   
-  information10 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_utility_issuance"][1])
+  information10 <- paste(ico_applicable[ico_applicable$country == p$id, "extraterritorial_appl_utility_turnover"][1])
   
-  information11 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_cryptocurrency_issuance"][1])
+  information11 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_cryptocurrency_turnover"][1])
   
-  information12 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_assets_issuance"][1])
+  information12 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_assets_turnover"][1])
+  
+  information13 <- paste(ico_applicable[ico_applicable$country == p$id, "extraterritorial_appl_assets_issue"][1])
+  
+  information14 <- paste(ico_applicable[ico_applicable$country == p$id, "applicable_law_exchange"][1])
+  
+  information15 <- paste(ico_applicable[ico_applicable$country == p$id, "extraterritorial_appl_exchange"][1])
+  
+  information16 <- paste(ico_applicable[ico_applicable$country == p$id, "possibility_of_an_agreement_utility"][1])
+  
+  information17 <- paste(ico_applicable[ico_applicable$country == p$id, "possibility_of_an_agreement_assets"][1])
+  
+  
   
       information1 <- lapply(information1, HTML)               
       information2 <- lapply(information2, HTML)
@@ -141,7 +153,17 @@ labels <- reactive ({
       information5 <- lapply(information5, HTML)
       information6 <- lapply(information6, HTML)
       information7 <- lapply(information7, HTML)
-     
+      information8 <- lapply(information8, HTML)               
+      information9 <- lapply(information9, HTML)
+      information10 <- lapply(information10, HTML)
+      information11 <- lapply(information11, HTML)
+      information12 <- lapply(information12, HTML)
+      information13 <- lapply(information13, HTML)
+      information14 <- lapply(information14, HTML)
+      information15 <- lapply(information15, HTML)
+      information16 <- lapply(information16, HTML)
+      information17 <- lapply(information17, HTML)
+      
       
       
    output$text1 <- renderUI({
@@ -180,7 +202,21 @@ labels <- reactive ({
    output$text12 <- renderUI({
      information12 
    })
-   
+   output$text13 <- renderUI({
+     information13 
+   })
+   output$text14 <- renderUI({
+     information14 
+   })
+   output$text15 <- renderUI({
+     information15 
+   })
+   output$text16 <- renderUI({
+     information16 
+   })
+   output$text17 <- renderUI({
+     information17 
+   })
    })
                                 
     
@@ -221,8 +257,50 @@ labels <- reactive ({
     observeEvent(input$button3_2,  {
       toggle("third_2", animType = "slide", anim = TRUE, time = 0.5)
     })
-}
+    observeEvent(input$button3_3,  {
+      toggle("third_3", animType = "slide", anim = TRUE, time = 0.5)
+    })
+    observeEvent(input$button3_4,  {
+      toggle("third_4", animType = "slide", anim = TRUE, time = 0.5)
+    })
+    observeEvent(input$button3_5,  {
+      toggle("third_5", animType = "slide", anim = TRUE, time = 0.5)
+    })
+    observeEvent(input$button3_6,  {
+      toggle("third_6", animType = "slide", anim = TRUE, time = 0.5)
+    })
 
+                          #### comparison of countries features ####           
+result_ab <-c()
+# 
+compar_1 <- reactive({
+for (i in c(5:7, 9, 11, 13:16,18:24)){
+  ifelse (ico_common[ico_common$country == input$select_com1, i] == ico_common[ico_common$country == input$select_com2, i],
+          result_ab <- c(result_ab, "Совпадения"),
+          result_ab <- c(result_ab, "Несовпадения "))
+}
+for (i in c(2:5, 8, 9,11)){
+  ifelse (ico_applicable[ico_applicable$country == input$select_com1, i] == ico_applicable[ico_applicable$country == input$select_com2,i],
+          result_ab <- c(result_ab, "Совпадения"),
+          result_ab <- c(result_ab,"Несовпадения "))
+}
+                          #### create a table for comparative plot for 2 countries ####
+ab_table <- data.frame("letter" = c("Совпадения", "Несовпадения "), "number" = c(length(result_ab[result_ab=="Совпадения"]), length(result_ab[result_ab=="Несовпадения "])))
+ab_table
+})
+
+output$plot1 <- renderPlotly({
+plot_ly(compar_1(), labels = ~letter, values = ~number, type="pie", sort = FALSE,
+                            textposition = 'inside',
+                            textinfo = 'percent',
+                            hoverinfo = 'text',
+                            text = ~paste(letter,":", number),
+                            hole = 0.6,
+                            marker=list(line=list(color="black", width=1))) %>%
+  layout(autosize = F, width = 340, height = 160)
+})
+
+}
 
 
 

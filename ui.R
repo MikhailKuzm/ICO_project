@@ -22,12 +22,13 @@ tabItem(tabName = "map",
           dropdown_icon = "wrench",
           gradientColor = "teal",
           boxToolSize = "sm",
-          width = 12,
+          width = 8,
           footer = selectInput("pal_but", label = "", width = "900px",
                                 choices = list("Регулирование Майнинга" = 1,
                                                "Применение законодательства о цб" = 2, 
                                                "Использование криптовалют в потребительских целях" = 3), 
                                 selected = 1)),
+        valueBox(12, "Государств \n проанализировано", icon = icon("atlas")),
         fluidRow(
           boxPlus(withSpinner(leafletOutput("mymap", height=380), type = 3),
             width = 12,
@@ -164,20 +165,34 @@ tabItem(tabName = "map",
 ),
                                 #### Comparison ####
 tabItem(tabName = "compare",
-        boxPad(
-          color = "green",
-          descriptionBlock(
-            header = "8390", 
-            text = "VISITS", 
-            rightBorder = FALSE,
-            marginBottom = TRUE
-          ),
-          descriptionBlock(
-            header = "30%", 
-            text = "REFERRALS", 
-            rightBorder = FALSE,
-            marginBottom = TRUE
-          ))
+        box(
+          width = 6,
+          title = "Выберите страны для сравнения",
+          icon = "fa fa-th",
+          collapsible = TRUE,
+          background = "teal",
+          selectInput("select_com1", label = "", width = 800,
+                                choices = list("Германия" = "Германия",
+                                               "Китайская Народная Республика" = "Китайская Народная Республика", 
+                                               "Эстония" = "Эстония",
+                                               "Великобритания" = "Великобритания",
+                                               "Швейцария" = "Швейцария"), 
+                                selected = "Великобритания"),
+                    selectInput("select_com2", label = "", width = 800,
+                      choices = list("Германия" = "Германия",
+                                     "Китайская Народная Республика" = "Китайская Народная Республика", 
+                                     "Эстония" = "Эстония",
+                                     "Великобритания" = "Великобритания",
+                                     "Швейцария" = "Швейцария"), 
+                      selected = "Германия")
+            ),
+          boxPlus(
+            title = "Общее сравнение",
+            collapsible = TRUE,
+            status = "teal",
+            plotlyOutput("plot1", height = 150)
+)
+        
 )
 )
 )
