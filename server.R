@@ -30,6 +30,34 @@ col_type <- reactive({
   }
   x
 })
+                    #### make comparison graph for map ####
+num_gen  <- reactive({ 
+  if (input$pal_but == 1){
+    x <- "mining_is_regulated"
+  } else if (input$pal_but == 2){
+    x <- "direct_application_of_securities_legislation"
+  }else{
+    x <- "payment_for_goods_and_services_in_cryptocurrency"
+  }
+  # make small table for graph with name and frequncy
+  test <- filter (ico_common, !is.na(get(x)))
+  num_gen <- data.frame(names = unique(test[,x]),
+                        n = as.data.frame(test %>% group_by (get(x)) %>%
+                                            summarise(n = n()))[2])
+num_gen 
+})
+
+output$main_comp <- renderPlotly({
+plot_ly(num_gen(), labels = ~names, values = ~n, type="pie", sort = FALSE,
+        height = 160,
+        textposition = 'inside',
+        textinfo = 'percent',
+        hoverinfo = 'percent',
+        hole = 0.6,
+        marker=list(line=list(color="black", width=1))) %>%
+    layout(showlegend = TRUE, legend = list(font = list(size = 10))) 
+})
+
 
                         #### Make interactive labels for map ####
 labels <- reactive ({ 
@@ -102,7 +130,7 @@ labels <- reactive ({
     })
     
     
-                  #### Make text under map (based on click on map) ####
+                        #### Make text under map (based on click on map) ####
     observeEvent(input$mymap_shape_click, {
   p <- input$mymap_shape_click
   information1 <- paste("<p>", "<b>", p$id,"</b>","</p>")
@@ -220,30 +248,12 @@ labels <- reactive ({
    })
                                 
     
-                                 #### Hide buttons until click on map####
-    # x <- reactive({
-    #   ifelse (is.null(input$mymap_shape_click), 0, 1)
-    # })
-                      
-                       
-    # observe({
-    #   shinyjs::hide("button1")
-    #   if(x())
-    #     shinyjs::show("button1")
-    # })
-    # 
-    # observe({
-    #   shinyjs::hide("button2")
-    #   if(x())
-    #   shinyjs::show("button2")
-    # })
-    
-                      #### First button for showing text under map ####
+                        #### First button for showing text under map ####
     
     observeEvent(input$button1,  {
       toggle("first", animType = "slide", anim = TRUE, time = 0.5)
     })
-                      #### Second button for showing text under map ####
+                        #### Second button for showing text under map ####
     observeEvent(input$button2,  {
       toggle("second", animType = "slide", anim = TRUE, time = 0.5)
     })
@@ -270,7 +280,7 @@ labels <- reactive ({
       toggle("third_6", animType = "slide", anim = TRUE, time = 0.5)
     })
 
-                          #### comparison of countries features ####           
+                        #### comparison of countries features ####           
 result_ab <-c()
 # 
 compar_1 <- reactive({
@@ -300,6 +310,28 @@ plot_ly(compar_1(), labels = ~letter, values = ~number, type="pie", sort = FALSE
   layout(autosize = F, width = 340, height = 160)
 })
 
+                        #### make time plot for countries ####
+number_ico <- read.csv("number_ico.csv")
+time_number <- reactive ({
+  time_number <- filter(comcontr, place == input$select_com1 | place == input$select_com2)
+  time_number
+})
+
+output$plot2 <- renderPlotly({
+p <- time_number() %>%
+  ggplot(aes(x=value, y=active, text = active, group=place, color=place)) +
+  geom_line(size = 1) +
+  theme_minimal() +
+  theme(legend.position = "bottom", axis.text.x=element_text(angle=30, hjust=1)) +
+  scale_x_date(date_breaks = "6 month", date_labels = "%m-%Y", 
+               limits = dmy("01-06-2017","01-11-2020")) +
+  ylab("")+
+  xlab("")
+
+p <- ggplotly(p, tooltip = "text") %>% 
+  layout(legend = list(orientation = "h", xanchor = "center", x = 0.5, y = -0.3))
+p  
+})
 }
 
 

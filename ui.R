@@ -17,18 +17,28 @@ sidebar = dashboardSidebar(
                                           #### Map ####
 tabItems(
 tabItem(tabName = "map",
+        fluidRow(
         gradientBox( title = "Раскрасить страны", 
           icon = "fa fa-paint-brush",
           dropdown_icon = "wrench",
           gradientColor = "teal",
           boxToolSize = "sm",
-          width = 8,
+          width = 7,
+          height = 210,
           footer = selectInput("pal_but", label = "", width = "900px",
                                 choices = list("Регулирование Майнинга" = 1,
                                                "Применение законодательства о цб" = 2, 
                                                "Использование криптовалют в потребительских целях" = 3), 
                                 selected = 1)),
-        valueBox(12, "Государств \n проанализировано", icon = icon("atlas")),
+        
+        # box with map graph comparison
+        boxPlus(collapsible = TRUE, 
+            status = "teal", 
+                title = "",
+                width=5,
+               withSpinner(plotlyOutput("main_comp", height = 150, width = "100%"),
+                           type = 3))),
+        
         fluidRow(
           boxPlus(withSpinner(leafletOutput("mymap", height=380), type = 3),
             width = 12,
@@ -90,7 +100,8 @@ tabItem(tabName = "map",
         actionButton("button3_1", label = "Указание на применимое право", 
                      width = '100%',
                      class = "btn-success", 
-                     style="color: #fff; text-align:center; float:center;
+                     style="color: #fff; background-color:#39CCCC;
+                     text-align:center; float:center;
                      font-size: 15px;"),
         shinyjs::hidden(
           div(id='third_1',
@@ -103,7 +114,8 @@ tabItem(tabName = "map",
         actionButton("button3_3", label = "Экстерриториальное прим. (утилити токены)", 
                      width = '100%',
                      class = "btn-success", 
-                     style="color: #fff; text-align:center; float:center;
+                     style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center;
                      font-size: 14px;"),
         shinyjs::hidden(
           div(id='third_3',
@@ -116,7 +128,8 @@ tabItem(tabName = "map",
         actionButton("button3_5", label = "Оборот токенов-активов", 
                      width = '100%',
                      class = "btn-success", 
-                     style="color: #fff; text-align:center; float:center"),
+                     style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
         shinyjs::hidden(
           div(id='third_5',
                 column(6, 
@@ -129,7 +142,7 @@ tabItem(tabName = "map",
         actionButton("button3_2", label = "Выпуск утилити токенов", 
                      width = '100%',
                      class = "btn-success", 
-                    style="color: #fff;"),
+                    style="color: #fff;background-color:#39CCCC;"),
         shinyjs::hidden(
             div(id='third_2',
                 column(6, 
@@ -141,7 +154,8 @@ tabItem(tabName = "map",
     actionButton("button3_4", label = "Оборот криптовалюты", 
                  width = '100%',
                  class = "btn-success",
-                 style="color: #fff; text-align:center"),
+                 style="color: #fff;background-color:#39CCCC;
+                 text-align:center"),
     shinyjs::hidden(
       div(id='third_4',
           column(6, 
@@ -153,7 +167,8 @@ tabItem(tabName = "map",
     actionButton("button3_6", label = "Экстерриториальное прим. (токены активы)", 
                  width = '100%',
                  class = "btn-success", 
-                 style="color: #fff; text-align:center;"),
+                 style="color: #fff;background-color:#39CCCC;
+                 text-align:center;"),
       shinyjs::hidden(
         div(id='third_6',
           column(6, 
@@ -165,6 +180,7 @@ tabItem(tabName = "map",
 ),
                                 #### Comparison ####
 tabItem(tabName = "compare",
+      fluidRow(
         box(
           width = 6,
           title = "Выберите страны для сравнения",
@@ -187,12 +203,20 @@ tabItem(tabName = "compare",
                       selected = "Германия")
             ),
           boxPlus(
-            title = "Общее сравнение",
+            title = "Сравнение законодательства",
             collapsible = TRUE,
             status = "teal",
             plotlyOutput("plot1", height = 150)
+)),
+        fluidRow(
+          boxPlus(
+            width = 6,
+            title = "Количество ICO",
+            collapsible = TRUE,
+            status = "teal",
+            plotlyOutput("plot2", height = 200, width = "100%")
 )
-        
+)        
 )
 )
 )
