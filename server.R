@@ -332,6 +332,84 @@ p <- ggplotly(p, tooltip = "text") %>%
   layout(legend = list(orientation = "h", xanchor = "center", x = 0.5, y = -0.3))
 p  
 })
+                        #### make circle bar plot ####
+label_data <- read.csv("circle_bar_t.csv")
+
+label_data1 <- reactive({
+  
+  l1 <-filter(label_data, group == input$select_com1)
+  x = 0
+  while (x < 3){
+    x = x+1
+  l1 <- l1  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
+                                       angle = NA)  
+  }
+  l2 <-filter(label_data, group == input$select_com2)
+  x = 0
+  while (x < 3){
+    x = x+1
+    l2 <- l2  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
+                          angle = NA)  
+  }
+  l3 <-filter(label_data, group == input$circle_sel1)
+  x = 0
+  while (x < 3){
+    x = x+1
+    l3 <- l3  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
+                          angle = NA)  
+  }
+  l4 <-filter(label_data, group == input$circle_sel2)
+  x = 0
+  while (x < 3){
+    x = x+1
+    l4 <- l4  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
+                          angle = NA)  
+  }
+  if (nrow(l3) > 5 & nrow(l3) > 5){
+    l_fin <- rbind(l1,l2,l3,l4)
+  }else{
+    if (nrow(l3) > 5){
+      l_fin <- rbind(l1,l2,l3)
+    }else{
+      if (nrow(l4) > 5){
+      l_fin <- rbind(l1,l2,l4)
+    }else{
+      l_fin <- rbind(l1,l2)
+    }
+        }
+  }
+  # make a table for circle bar
+  l_fin$id <- seq(nrow(l_fin))
+  number_of_bar <- nrow(l_fin)
+  angle <-  90 - 360 * (l_fin$id-0.5) /number_of_bar 
+  l_fin$hjust <- ifelse( angle < -90, 1, 0)
+  l_fin$angle <- ifelse(angle < -90, angle+180, angle)
+  l_fin
+})
+
+output$plot3 <- renderPlot({
+  ggplot(label_data1(), aes(x=as.factor(id), y=value, fill=group)) +
+    geom_bar(stat="identity", alpha=0.5) +
+    ylim(-70,290) +
+    theme_minimal() +
+    labs("")+
+    theme(
+      legend.position = c(0.5, 0.5),
+      legend.title=element_blank(),
+      legend.text = element_text(size = 8),
+      axis.text = element_blank(),
+      axis.title = element_blank(),
+      panel.grid = element_blank(),
+      plot.margin = unit(rep(-6,10), "cm")  
+    ) +
+    coord_polar(start = 0)+
+    geom_text(data=label_data1(), aes(x=id, y=value+5, label=feature, hjust=hjust),
+              color="black", fontface="bold",alpha=0.6, size=3.5, 
+              angle= label_data1()$angle, inherit.aes = FALSE ) 
+})
+
+
+
 }
 
 

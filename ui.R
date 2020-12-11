@@ -193,14 +193,14 @@ tabItem(tabName = "compare",
                                                "Эстония" = "Эстония",
                                                "Великобритания" = "Великобритания",
                                                "Швейцария" = "Швейцария"), 
-                                selected = "Великобритания"),
+                                selected = "Германия"),
                     selectInput("select_com2", label = "", width = 800,
                       choices = list("Германия" = "Германия",
                                      "Китайская Народная Республика" = "Китайская Народная Республика", 
                                      "Эстония" = "Эстония",
                                      "Великобритания" = "Великобритания",
                                      "Швейцария" = "Швейцария"), 
-                      selected = "Германия")
+                      selected = "Эстония")
             ),
           boxPlus(
             title = "Сравнение законодательства",
@@ -215,12 +215,53 @@ tabItem(tabName = "compare",
             collapsible = TRUE,
             status = "teal",
             plotlyOutput("plot2", height = 200, width = "100%")
+),
+
+                         #### Circle bar  box####
+          boxPlus(
+            width = 6,
+            title = "Изменение законов и кол. ICO",
+            collapsible = TRUE,
+            status = "teal",
+            enable_sidebar = TRUE,
+            sidebar_width = 75,
+            sidebar_start_open = FALSE,
+            sidebar_content = tagList(selectizeInput("circle_sel1", label = "", 
+                                          choices = list("Германия" = "Германия",
+                                                         "Китайская Народная Республика" = "Китайская Народная Республика", 
+                                                         "Эстония" = "Эстония",
+                                                         "Великобритания" = "Великобритания",
+                                                         "Швейцария" = "Швейцария",
+                                                         "Япония" = "Япония"), 
+                                          options = list(placeholder = 'Please select an option below',
+                                            onInitialize = I('function() { this.setValue(""); }'))),
+          
+                         selectizeInput("circle_sel2", label = "", 
+                        choices = list("Германия" = "Германия",
+                                       "Китайская Народная Республика" = "Китайская Народная Республика", 
+                                       "Эстония" = "Эстония",
+                                       "Великобритания" = "Великобритания",
+                                       "Швейцария" = "Швейцария",
+                                       "Япония"= "Япония"),
+                        options = list( placeholder = 'Please select an option below',
+                          onInitialize = I('function() { this.setValue(""); }'))),
+                        
+                        selectizeInput("circle_sel3", label = "", 
+                            choices = list("Германия" = "Германия",
+                                         "Китайская Народная Республика" = "Китайская Народная Республика", 
+                                          "Эстония" = "Эстония",
+                                          "Великобритания" = "Великобритания",
+                                           "Швейцария" = "Швейцария"),
+                            options = list(placeholder = 'Please select an option below',
+                              onInitialize = I('function() { this.setValue(""); }')))),
+            plotOutput("plot3", height = 240, width = "100%"))
+          )
 )
-)        
 )
 )
 )
-)
+
+
 
 
 
