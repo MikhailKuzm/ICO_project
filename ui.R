@@ -214,7 +214,7 @@ tabItem(tabName = "compare",
             title = "Количество ICO",
             collapsible = TRUE,
             status = "teal",
-            plotlyOutput("plot2", height = 200, width = "100%")
+            plotlyOutput("plot2", height = 240, width = "100%")
 ),
 
                          #### Circle bar  box####
@@ -233,7 +233,7 @@ tabItem(tabName = "compare",
                                                          "Великобритания" = "Великобритания",
                                                          "Швейцария" = "Швейцария",
                                                          "Япония" = "Япония"), 
-                                          options = list(placeholder = 'Please select an option below',
+                                          options = list(placeholder = 'Выберите страну',
                                             onInitialize = I('function() { this.setValue(""); }'))),
           
                          selectizeInput("circle_sel2", label = "", 
@@ -243,19 +243,34 @@ tabItem(tabName = "compare",
                                        "Великобритания" = "Великобритания",
                                        "Швейцария" = "Швейцария",
                                        "Япония"= "Япония"),
-                        options = list( placeholder = 'Please select an option below',
-                          onInitialize = I('function() { this.setValue(""); }'))),
-                        
-                        selectizeInput("circle_sel3", label = "", 
-                            choices = list("Германия" = "Германия",
-                                         "Китайская Народная Республика" = "Китайская Народная Республика", 
-                                          "Эстония" = "Эстония",
-                                          "Великобритания" = "Великобритания",
-                                           "Швейцария" = "Швейцария"),
-                            options = list(placeholder = 'Please select an option below',
-                              onInitialize = I('function() { this.setValue(""); }')))),
-            plotOutput("plot3", height = 240, width = "100%"))
-          )
+                        options = list( placeholder = 'Выберите страну',
+                          onInitialize = I('function() { this.setValue(""); }')))),
+            plotOutput("plot3", height = 250, width = "100%"))
+          ),
+                            #### Network comparison
+boxPlus(
+  width = 12,
+  title = "Сеть соответствия законодательств",
+  collapsible = TRUE,
+  status = "teal",
+  enable_sidebar = TRUE,
+  sidebar_width = 35,
+  sidebar_start_open = FALSE,
+  sidebar_content = tagList(checkboxGroupInput("network_1", label = "Выберите страны для графика", 
+                                           choices = list("Германия" = "Германия",
+                                                          "Китайская Народная Республика" = "Китайская Народная Республика", 
+                                                          "Эстония" = "Эстония",
+                                                          "Великобритания" = "Великобритания",
+                                                          "Швейцария" = "Швейцария",
+                                                          "Япония" = "Япония",
+                                                          "Россия" = "Россия",
+                                                          "Франция" = "Франция",
+                                                          "Украина" = "Украина"
+                                                          ), 
+                                           selected = c("Германия","Китайская Народная Республика",
+                                                        "Эстония", "Великобритания",
+                                                        "Россия", "Украина"))),
+plotOutput("plot_network",width = "100%"))
 )
 )
 )

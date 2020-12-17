@@ -30,7 +30,7 @@ col_type <- reactive({
   }
   x
 })
-                    #### make comparison graph for map ####
+                        #### make comparison graph for map ####
 num_gen  <- reactive({ 
   if (input$pal_but == 1){
     x <- "mining_is_regulated"
@@ -410,7 +410,70 @@ output$plot3 <- renderPlot({
 
 
 
+                        #### network graph ####
+test_t <- filter(ico_common, !is.na(legal_source_utility))
+
+# find all NA and replace them with 0
+test_t <- test_t[,1:24]
+test_t[is.na(test_t)] = 0
+
+
+# make reactive table
+#n <- reactive({ input$network_1 })
+mt <- reactive({ 
+z <- input$network_1  
+z <-  match(z,test_t$country)
+test_t <- test_t[z,]
+m <- matrix(rep(0,length(input$network_1)*length(input$network_1)), 
+            nrow = length(input$network_1), ncol = length(input$network_1),
+            dimnames = list(input$network_1,input$network_1))
+
+# make for loop to make matrix
+for (i in 1:length(input$network_1)) {  # row
+  for (j in 2:24) {    # column
+    t = 0
+    while (t < length(input$network_1)){
+      t = t+1
+      if(test_t[i,j] == test_t[t,j]){
+        m[t,i] <- m[t,i] +1
+      }else{
+        next
+      }}
+  }
 }
+m
+})
+
+output$plot_network <- renderPlot({
+network <- graph_from_adjacency_matrix(mt(), weighted=TRUE, 
+                                       mode="undirected", diag=F)
+deg <- rowSums(mt())   # size of node
+cut.off <- mean(mt()) # mean of number of edges
+m1 <- as.data.frame(mt())  
+x <-c()       # make vector for collor 
+for (i in 1:length(input$network_1)){
+  temp <- mean(m1[,i])
+  if (temp>cut.off){
+    x <- c(x,0)
+    print(x)
+  }else{
+    x<- c(x,1)
+    print(x)
+  }
+}
+
+colrs <- c("deepskyblue1", "maroon1")
+V(network)$color <- colrs[ifelse(x==0,1,2)]
+n_for_shape <- grep(0,x)
+net_plot <- plot(network, vertex.size=deg/8, vertex.label.font=2,
+                 vertex.shape = 'sphere',
+                 vertex.label.dist = 2, 
+                 mark.groups=n_for_shape, mark.col="#C5E5E7", 
+                 edge.curved=0.3 )
+net_plot
+})
+}
+
 
 
 
