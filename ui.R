@@ -28,7 +28,7 @@ tabItem(tabName = "map",
           footer = selectInput("pal_but", label = "", width = "900px",
                                 choices = list("Регулирование Майнинга" = 1,
                                                "Применение законодательства о цб" = 2, 
-                                               "Использование криптовалют в потребительских целях" = 3), 
+                                               "Свободный оборот криптовалют" = 3), 
                                 selected = 1)),
         
         # box with map graph comparison
@@ -206,7 +206,9 @@ tabItem(tabName = "compare",
             title = "Сравнение законодательства",
             collapsible = TRUE,
             status = "teal",
-            plotlyOutput("plot1", height = 150)
+            withSpinner(plotlyOutput("plot1", height = 150),
+                        type = 3)
+            
 )),
         fluidRow(
           boxPlus(
@@ -214,10 +216,11 @@ tabItem(tabName = "compare",
             title = "Количество ICO",
             collapsible = TRUE,
             status = "teal",
-            plotlyOutput("plot2", height = 240, width = "100%")
+            withSpinner(plotlyOutput("plot2", height = 240, width = "100%"),
+                        type = 3)
 ),
 
-                         #### Circle bar  box####
+                            #### Circle bar  box####
           boxPlus(
             width = 6,
             title = "Изменение законов и кол. ICO",
@@ -245,9 +248,10 @@ tabItem(tabName = "compare",
                                        "Япония"= "Япония"),
                         options = list( placeholder = 'Выберите страну',
                           onInitialize = I('function() { this.setValue(""); }')))),
-            plotOutput("plot3", height = 250, width = "100%"))
-          ),
-                            #### Network comparison
+            withSpinner(plotOutput("plot3", height = 250, width = "100%"),
+                        type = 3)
+          )),
+                            #### Network comparison ####
 boxPlus(
   width = 12,
   title = "Сеть соответствия законодательств",
@@ -270,7 +274,221 @@ boxPlus(
                                            selected = c("Германия","Китайская Народная Республика",
                                                         "Эстония", "Великобритания",
                                                         "Россия", "Украина"))),
-plotOutput("plot_network",width = "100%"))
+  withSpinner(plotOutput("plot_network",width = "100%"), type = 3)),
+
+                    #### accordion box ####
+
+  # FIRST COLUMN
+boxPlus(width = 6, title = textOutput("comp_t"),
+        collapsible = TRUE, status = "teal", 
+    actionButton("accord_1", label = "Определения", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff; background-color:#39CCCC;
+                     text-align:center; float:center;
+                     font-size: 15px;"),
+    shinyjs::hidden(
+      div(id='acc1',  
+          fluidRow(align = "center",
+          column(6, 
+                 uiOutput("acct_1"),
+                 tags$style(type="text/css", "#acct_1 { height: 80px; 
+                                     width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord_2", label = "Свободный оборот криптовалют", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff; background-color:#39CCCC;
+                     text-align:center; float:center;
+                     font-size: 15px;"),
+    shinyjs::hidden(
+      div(id='acc2',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct_2"),
+                          tags$style(type="text/css", "#acct_2 { height: 20px; 
+                                     width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord_3", label = "Применимое право установлено", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center; 
+                     font-size: 14px;"),
+    shinyjs::hidden(
+      div(id='acc3',  
+          fluidRow(align = "center",
+          column(6, 
+                 uiOutput("acct_3"),
+                 tags$style(type="text/css", "#acct_3 { height: 20px; 
+                                         width: 340px;
+                                        text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord_5", label = "Экстерриториальное прим. (утилити токены)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc5',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct_5"),
+                          tags$style(type="text/css", "#acct_5 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord_6", label = "Экстерриториальное прим. (токены активы)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc6',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct_6"),
+                          tags$style(type="text/css", "#acct_6 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord_7", label = "Экстерриториальное прим. (криптобиржи)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc7',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct_7"),
+                          tags$style(type="text/css", "#acct_7 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord_8", label = "Соглашение о прим. праве (утилити)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc8',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct_8"),
+                          tags$style(type="text/css", "#acct_8 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}")))))),
+
+
+# SECOND COLUMN
+boxPlus(width = 6, title = textOutput("comp_t2"),
+        collapsible = TRUE, status = "teal",
+    actionButton("accord2_1", label = "Определения", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff; background-color:#39CCCC;
+                     text-align:center; float:center;
+                     font-size: 15px;"),
+    shinyjs::hidden(
+      div(id='acc21',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct2_1"),
+                          tags$style(type="text/css", "#acct2_1 { height: 80px; 
+                                     width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord2_2", label = "Свободный оборот криптовалют", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff; background-color:#39CCCC;
+                     text-align:center; float:center;
+                     font-size: 15px;"),
+    shinyjs::hidden(
+      div(id='acc22',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct2_2"),
+                          tags$style(type="text/css", "#acct2_2 { height: 20px; 
+                                     width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord2_3", label = "Применимое право установлено", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center; 
+                     font-size: 14px;"),
+    shinyjs::hidden(
+      div(id='acc23',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct2_3"),
+                          tags$style(type="text/css", "#acct2_3 { height: 20px; 
+                                         width: 340px;
+                                        text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord2_5", label = "Экстерриториальное прим. (утилити токены)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc25',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct2_5"),
+                          tags$style(type="text/css", "#acct2_5 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord2_6", label = "Экстерриториальное прим. (токены активы)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc26',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct2_6"),
+                          tags$style(type="text/css", "#acct2_6 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord2_7", label = "Экстерриториальное прим. (криптобиржи)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc27',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct2_7"),
+                          tags$style(type="text/css", "#acct2_7 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}"))))),
+    
+    actionButton("accord2_8", label = "Соглашение о прим. праве (утилити)", 
+                 width = '100%',
+                 class = "btn-success", 
+                 style="color: #fff;background-color:#39CCCC;
+                     text-align:center; float:center"),
+    shinyjs::hidden(
+      div(id='acc28',  
+          fluidRow(align = "center",
+                   column(6, 
+                          uiOutput("acct2_8"),
+                          tags$style(type="text/css", "#acct2_8 { height: 20px; 
+                                   width: 340px;
+                                   text-align:center; font-size: 15px;}"))))))
+
+
+
 )
 )
 )

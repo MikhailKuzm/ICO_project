@@ -472,6 +472,154 @@ net_plot <- plot(network, vertex.size=deg/8, vertex.label.font=2,
                  edge.curved=0.3 )
 net_plot
 })
+                        #### buttons for comparison page ####
+  # FIRST COLUMN
+
+output$comp_t <- renderText({input$select_com1})
+output$comp_t2 <- renderText({input$select_com2})
+
+output$acct_1 <- renderUI({
+  x <- ico_common[ico_common$country == input$select_com1,c("name_utility",
+                                                        "name_cryptocurrency",
+                                                        "name_assets")][1,]
+  
+  HTML(paste0("<p>",x[1],"</p>","<p>", x[2],"</p>","<p>", x[3],"</p>", sep="\n"))
+})
+
+output$acct_2 <- renderUI({
+  ico_common[ico_common$country == input$select_com1, 
+             "payment_for_goods_and_services_in_cryptocurrency"][1]
+})
+
+output$acct_3 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com1, 
+                               "clause_of_the_applicable_law"][1]
+})
+
+output$acct_5 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com1,
+                 "extraterritorial_appl_utility_turnover"][1]
+})
+
+output$acct_6 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com1,
+                 "extraterritorial_appl_assets_issue"][1]
+})
+
+output$acct_7 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com1,
+                 "extraterritorial_appl_exchange"][1]
+})
+
+output$acct_8 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com1,
+                 "possibility_of_an_agreement_utility"][1]
+})
+
+
+
+observeEvent(input$accord_1,  {
+  toggle("acc1", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord_2,  {
+  toggle("acc2", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord_3,  {
+  toggle("acc3", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord_5,  {
+  toggle("acc5", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord_6,  {
+  toggle("acc6", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord_7,  {
+  toggle("acc7", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord_8,  {
+  toggle("acc8", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+    # SECOND COLUMN
+output$acct2_1 <- renderUI({
+  x <- ico_common[ico_common$country == input$select_com2,c("name_utility",
+                                                            "name_cryptocurrency",
+                                                            "name_assets")][1,]
+  
+  HTML(paste0("<p>",x[1],"</p>","<p>", x[2],"</p>","<p>", x[3],"</p>", sep="\n"))
+})
+
+output$acct2_2 <- renderUI({
+  ico_common[ico_common$country == input$select_com2, 
+             "payment_for_goods_and_services_in_cryptocurrency"][1]
+})
+
+output$acct2_3 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com2, 
+                 "clause_of_the_applicable_law"][1]
+})
+
+output$acct2_5 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com2,
+                 "extraterritorial_appl_utility_turnover"][1]
+})
+
+output$acct2_6 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com2,
+                 "extraterritorial_appl_assets_issue"][1]
+})
+
+output$acct2_7 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com2,
+                 "extraterritorial_appl_exchange"][1]
+})
+
+output$acct2_8 <- renderUI({
+  ico_applicable[ico_applicable$country == input$select_com2,
+                 "possibility_of_an_agreement_utility"][1]
+})
+
+
+
+observeEvent(input$accord2_1,  {
+  toggle("acc21", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord2_2,  {
+  toggle("acc22", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord2_3,  {
+  toggle("acc23", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord2_5,  {
+  toggle("acc25", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord2_6,  {
+  toggle("acc26", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord2_7,  {
+  toggle("acc27", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+observeEvent(input$accord2_8,  {
+  toggle("acc28", animType = "slide", anim = TRUE, time = 0.5)
+})
+
+
+
+
+
+
 }
 
 
