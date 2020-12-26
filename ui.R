@@ -1,5 +1,5 @@
 
-ui <-dashboardPagePlus(skin = "blue-light",
+ui <-dashboardPagePlus(
     dashboardHeaderPlus(title = tagList(
                           span(class = "logo-lg", "Меню"), 
                           img(src = "https://image.flaticon.com/icons/svg/204/204074.svg")),
@@ -8,12 +8,20 @@ ui <-dashboardPagePlus(skin = "blue-light",
 sidebar = dashboardSidebar(
         width = 240,
         sidebarMenu(
-            menuItem("Карта", tabName = "map", icon = icon("globe")
-        ),
-        menuItem("Сравнение", tabName = "compare", icon = icon("globe"))
-        )),
+            menuItem("Карта", tabName = "map", 
+                     icon = icon("glyphicon glyphicon-globe", lib = "glyphicon")
+            ),
+            menuItem("Сравнение", tabName = "compare", icon = icon("globe")
+            ),
+            menuItem("Методология", tabName = "method", icon = icon("globe")
+        
+        ))),
                                         ### Main Body ###
  dashboardBody(useShinyjs(),
+               ### changing theme
+               shinyDashboardThemes(
+                 theme = "blue_gradient"
+               ),
                                           #### Map ####
 tabItems(
 tabItem(tabName = "map",
@@ -276,10 +284,20 @@ boxPlus(
                                                         "Россия", "Украина"))),
   withSpinner(plotOutput("plot_network",width = "100%"), type = 3)),
 
-                    #### accordion box ####
+                    #       ### accordion box ####
 
   # FIRST COLUMN
 boxPlus(width = 6, title = textOutput("comp_t"),
+        enable_dropdown = TRUE,
+        dropdown_icon = "wrench",
+        dropdown_menu = dropdownItemList(
+          dropdownItem(name = "item 2"),
+          dropdownDivider(),
+          dropdownItem(url = "#", name = "item 3")
+        ),
+        enable_label = TRUE,
+        label_text = 2,
+        label_status = "danger",
         collapsible = TRUE, status = "teal", 
     actionButton("accord_1", label = "Определения", 
                  width = '100%',
@@ -385,6 +403,9 @@ boxPlus(width = 6, title = textOutput("comp_t"),
 
 # SECOND COLUMN
 boxPlus(width = 6, title = textOutput("comp_t2"),
+        enable_label = TRUE,
+        label_text = 1,
+        label_status = "danger",
         collapsible = TRUE, status = "teal",
     actionButton("accord2_1", label = "Определения", 
                  width = '100%',
@@ -485,14 +506,26 @@ boxPlus(width = 6, title = textOutput("comp_t2"),
                           uiOutput("acct2_8"),
                           tags$style(type="text/css", "#acct2_8 { height: 20px; 
                                    width: 340px;
-                                   text-align:center; font-size: 15px;}"))))))
+                                   text-align:center; font-size: 15px;}"))))))),
+      
+                         #### Methodology ####
+       tabItem(tabName = "method",
+               boxPlus())
 
 
 
+
 )
 )
 )
-)
+
+
+
+
+
+
+
+
 
 
 
