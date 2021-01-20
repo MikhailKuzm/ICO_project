@@ -282,20 +282,25 @@ labels <- reactive ({
 
                         #### comparison of countries features ####           
 result_ab <-c()
-# 
+# make reactive for matched and unmatched values for circle plot
 compar_1 <- reactive({
-for (i in c(5:7, 9, 11, 13:16,18:24)){
-  ifelse (ico_common[ico_common$country == input$select_com1, i] == ico_common[ico_common$country == input$select_com2, i],
-          result_ab <- c(result_ab, "Совпадения"),
-          result_ab <- c(result_ab, "Несовпадения "))
+  toMatch <-c(input$compare_c)
+  for (i in c(5:7, 9, 11, 13:16,18:24)){
+    x <- ico_common[c(grep(paste(toMatch,collapse="|"), ico_common$country)), i]
+    y <- length(x) - length(unique(x)) # the same values
+    y2 <- length(x)- y # different values
+    result_ab <- c(result_ab, rep(c("Совпадения", "Несовпадения"), times=c(y,y2)))
 }
 for (i in c(2:5, 8, 9,11)){
-  ifelse (ico_applicable[ico_applicable$country == input$select_com1, i] == ico_applicable[ico_applicable$country == input$select_com2,i],
-          result_ab <- c(result_ab, "Совпадения"),
-          result_ab <- c(result_ab,"Несовпадения "))
+  x <- ico_common[c(grep(paste(toMatch,collapse="|"), ico_common$country)), i]
+  y <- length(x) - length(unique(x)) # the same values
+  y2 <- length(x)- y # different values
+  result_ab <- c(result_ab, rep(c("Совпадения", "Несовпадения"), times=c(y,y2)))
 }
-                          #### create a table for comparative plot for 2 countries ####
-ab_table <- data.frame("letter" = c("Совпадения", "Несовпадения "), "number" = c(length(result_ab[result_ab=="Совпадения"]), length(result_ab[result_ab=="Несовпадения "])))
+            #### create a table for comparative plot for countries ####
+ab_table <- data.frame("letter" = c("Совпадения", "Несовпадения"), 
+                       "number" = c(length(result_ab[result_ab=="Совпадения"]),
+                                    length(result_ab[result_ab=="Несовпадения"])))
 ab_table
 })
 
@@ -313,14 +318,15 @@ plot_ly(compar_1(), labels = ~letter, values = ~number, type="pie", sort = FALSE
                         #### make time plot for countries ####
 number_ico <- read.csv("number_ico.csv")
 time_number <- reactive ({
-  time_number <- filter(comcontr, place == input$select_com1 | place == input$select_com2)
+  toMatch1 <-c(input$compare_c) #multyinput
+  time_number <- comcontr[c(grep(paste(toMatch1,collapse="|"), comcontr$place)), ]
   time_number
 })
 
 output$plot2 <- renderPlotly({
 p <- time_number() %>%
   ggplot(aes(x=value, y=active, text = active, group=place, color=place)) +
-  geom_line(size = 1) +
+  geom_line(size = 0.7) +
   theme_minimal() +
   theme(legend.position = "bottom", axis.text.x=element_text(angle=30, hjust=1)) +
   scale_x_date(date_breaks = "6 month", date_labels = "%m-%Y", 
@@ -332,82 +338,6 @@ p <- ggplotly(p, tooltip = "text") %>%
   layout(legend = list(orientation = "h", xanchor = "center", x = 0.5, y = -0.3))
 p  
 })
-                        #### make circle bar plot ####
-label_data <- read.csv("circle_bar_t.csv")
-
-label_data1 <- reactive({
-  
-  l1 <-filter(label_data, group == input$select_com1)
-  x = 0
-  while (x < 3){
-    x = x+1
-  l1 <- l1  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
-                                       angle = NA)  
-  }
-  l2 <-filter(label_data, group == input$select_com2)
-  x = 0
-  while (x < 3){
-    x = x+1
-    l2 <- l2  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
-                          angle = NA)  
-  }
-  l3 <-filter(label_data, group == input$circle_sel1)
-  x = 0
-  while (x < 3){
-    x = x+1
-    l3 <- l3  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
-                          angle = NA)  
-  }
-  l4 <-filter(label_data, group == input$circle_sel2)
-  x = 0
-  while (x < 3){
-    x = x+1
-    l4 <- l4  %>% add_row(group = NA, value= NA,feature = NA, id = 32, hjust = NA,  
-                          angle = NA)  
-  }
-  if (nrow(l3) > 5 & nrow(l3) > 5){
-    l_fin <- rbind(l1,l2,l3,l4)
-  }else{
-    if (nrow(l3) > 5){
-      l_fin <- rbind(l1,l2,l3)
-    }else{
-      if (nrow(l4) > 5){
-      l_fin <- rbind(l1,l2,l4)
-    }else{
-      l_fin <- rbind(l1,l2)
-    }
-        }
-  }
-  # make a table for circle bar
-  l_fin$id <- seq(nrow(l_fin))
-  number_of_bar <- nrow(l_fin)
-  angle <-  90 - 360 * (l_fin$id-0.5) /number_of_bar 
-  l_fin$hjust <- ifelse( angle < -90, 1, 0)
-  l_fin$angle <- ifelse(angle < -90, angle+180, angle)
-  l_fin
-})
-
-output$plot3 <- renderPlot({
-  ggplot(label_data1(), aes(x=as.factor(id), y=value, fill=group)) +
-    geom_bar(stat="identity", alpha=0.5) +
-    ylim(-70,290) +
-    theme_minimal() +
-    labs("")+
-    theme(
-      legend.position = c(0.5, 0.5),
-      legend.title=element_blank(),
-      legend.text = element_text(size = 8),
-      axis.text = element_blank(),
-      axis.title = element_blank(),
-      panel.grid = element_blank(),
-      plot.margin = unit(rep(-6,10), "cm")  
-    ) +
-    coord_polar(start = 0)+
-    geom_text(data=label_data1(), aes(x=id, y=value+5, label=feature, hjust=hjust),
-              color="black", fontface="bold",alpha=0.6, size=3.5, 
-              angle= label_data1()$angle, inherit.aes = FALSE ) 
-})
-
 
 
                         #### network graph ####
@@ -450,7 +380,7 @@ network <- graph_from_adjacency_matrix(mt(), weighted=TRUE,
 deg <- rowSums(mt())   # size of node
 cut.off <- mean(mt()) # mean of number of edges
 m1 <- as.data.frame(mt())  
-x <-c()       # make vector for collor 
+x <-c()       # make vector for color 
 for (i in 1:length(input$network_1)){
   temp <- mean(m1[,i])
   if (temp>cut.off){
@@ -472,153 +402,7 @@ net_plot <- plot(network, vertex.size=deg/8, vertex.label.font=2,
                  edge.curved=0.3 )
 net_plot
 })
-                        #### buttons for comparison page ####
-  # FIRST COLUMN
-
-output$comp_t <- renderText({input$select_com1})
-output$comp_t2 <- renderText({input$select_com2})
-
-output$acct_1 <- renderUI({
-  x <- ico_common[ico_common$country == input$select_com1,c("name_utility",
-                                                        "name_cryptocurrency",
-                                                        "name_assets")][1,]
-  
-  HTML(paste0("<p>",x[1],"</p>","<p>", x[2],"</p>","<p>", x[3],"</p>", sep="\n"))
-})
-
-output$acct_2 <- renderUI({
-  ico_common[ico_common$country == input$select_com1, 
-             "payment_for_goods_and_services_in_cryptocurrency"][1]
-})
-
-output$acct_3 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com1, 
-                               "clause_of_the_applicable_law"][1]
-})
-
-output$acct_5 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com1,
-                 "extraterritorial_appl_utility_turnover"][1]
-})
-
-output$acct_6 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com1,
-                 "extraterritorial_appl_assets_issue"][1]
-})
-
-output$acct_7 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com1,
-                 "extraterritorial_appl_exchange"][1]
-})
-
-output$acct_8 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com1,
-                 "possibility_of_an_agreement_utility"][1]
-})
-
-
-
-observeEvent(input$accord_1,  {
-  toggle("acc1", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord_2,  {
-  toggle("acc2", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord_3,  {
-  toggle("acc3", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord_5,  {
-  toggle("acc5", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord_6,  {
-  toggle("acc6", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord_7,  {
-  toggle("acc7", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord_8,  {
-  toggle("acc8", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-    # SECOND COLUMN
-output$acct2_1 <- renderUI({
-  x <- ico_common[ico_common$country == input$select_com2,c("name_utility",
-                                                            "name_cryptocurrency",
-                                                            "name_assets")][1,]
-  
-  HTML(paste0("<p>",x[1],"</p>","<p>", x[2],"</p>","<p>", x[3],"</p>", sep="\n"))
-})
-
-output$acct2_2 <- renderUI({
-  ico_common[ico_common$country == input$select_com2, 
-             "payment_for_goods_and_services_in_cryptocurrency"][1]
-})
-
-output$acct2_3 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com2, 
-                 "clause_of_the_applicable_law"][1]
-})
-
-output$acct2_5 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com2,
-                 "extraterritorial_appl_utility_turnover"][1]
-})
-
-output$acct2_6 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com2,
-                 "extraterritorial_appl_assets_issue"][1]
-})
-
-output$acct2_7 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com2,
-                 "extraterritorial_appl_exchange"][1]
-})
-
-output$acct2_8 <- renderUI({
-  ico_applicable[ico_applicable$country == input$select_com2,
-                 "possibility_of_an_agreement_utility"][1]
-})
-
-
-
-observeEvent(input$accord2_1,  {
-  toggle("acc21", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord2_2,  {
-  toggle("acc22", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord2_3,  {
-  toggle("acc23", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord2_5,  {
-  toggle("acc25", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord2_6,  {
-  toggle("acc26", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord2_7,  {
-  toggle("acc27", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-observeEvent(input$accord2_8,  {
-  toggle("acc28", animType = "slide", anim = TRUE, time = 0.5)
-})
-
-
-
-
-
+ 
 
 }
 

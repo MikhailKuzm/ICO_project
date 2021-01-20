@@ -19,5 +19,18 @@ library(shinyjs)
 library(shinydashboardPlus)
 library(shinycssloaders)
 library(plotly)
+library(shinyWidgets )
 source("common_table.R")
 
+#css for checkboxinput columns
+tweaks <- list(tags$head(tags$style(HTML("
+                                 .multicol { 
+                                   height: 200px;
+                                   -webkit-column-count: 5; /* Chrome, Safari, Opera */ 
+                                   -moz-column-count: 5;    /* Firefox */ 
+                                   column-count: 5; 
+                                   -moz-column-fill: auto;
+                                   -column-fill: auto;
+                                 } 
+                                 ")) 
+  ))
