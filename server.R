@@ -44,18 +44,18 @@ num_gen  <- reactive({
   num_gen <- data.frame(names = unique(test[,x]),
                         n = as.data.frame(test %>% group_by (get(x)) %>%
                                             summarise(n = n()))[2])
-num_gen 
+#find percent of features among all cointies
+num_gen$n <- round(num_gen$n/sum(num_gen$n)*100)
+num_gen
 })
 
-output$main_comp <- renderPlotly({
-plot_ly(num_gen(), labels = ~names, values = ~n, type="pie", sort = FALSE,
-        height = 160,
-        textposition = 'inside',
-        textinfo = 'percent',
-        hoverinfo = 'percent',
-        hole = 0.6,
-        marker=list(line=list(color="black", width=1))) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 10))) 
+
+output$main_comp <-  renderEcharts4r({
+model <-  e_charts(num_gen(), names)  
+e_pie(model, n, radius = c("50%", "70%"))%>%
+  e_tooltip(formatter =htmlwidgets::JS("
+                        function(params){return(params.value + ' %')}")) %>%
+  e_legend(trigger ="axis",  top = 1)
 })
 
 
@@ -280,7 +280,7 @@ labels <- reactive ({
       toggle("third_6", animType = "slide", anim = TRUE, time = 0.5)
     })
 
-                        #### comparison of countries features ####           
+                        #### comparison of countries features with Echarts4r####           
 result_ab <-c()
 # make reactive for matched and unmatched values for circle plot
 compar_1 <- reactive({
@@ -301,21 +301,25 @@ for (i in c(2:5, 8, 9,11)){
 ab_table <- data.frame("letter" = c("Совпадения", "Несовпадения"), 
                        "number" = c(length(result_ab[result_ab=="Совпадения"]),
                                     length(result_ab[result_ab=="Несовпадения"])))
+
+ab_table$number <- round(ab_table$number/sum(ab_table$number)*100)
 ab_table
 })
 
-output$plot1 <- renderPlotly({
-plot_ly(compar_1(), labels = ~letter, values = ~number, type="pie", sort = FALSE,
-                            textposition = 'inside',
-                            textinfo = 'percent',
-                            hoverinfo = 'text',
-                            text = ~paste(letter,":", number),
-                            hole = 0.6,
-                            marker=list(line=list(color="black", width=1))) %>%
-  layout(autosize = F, width = 340, height = 160)
+output$plot1 <-  renderEcharts4r({
+model <-  e_charts(compar_1(), letter)  
+e_pie(model, number, radius = c("50%", "70%"))%>%
+  e_tooltip(formatter =htmlwidgets::JS("
+                        function(params){return(params.value + ' %')}")) %>%
+  e_legend(trigger ="axis",  bottom = 1)
 })
 
-                        #### make time plot for countries ####
+
+
+
+
+
+                        #### make time plot for countries with ggplotly####
 number_ico <- read.csv("number_ico.csv")
 time_number <- reactive ({
   toMatch1 <-c(input$compare_c) #multyinput
@@ -403,6 +407,24 @@ net_plot <- plot(network, vertex.size=deg/8, vertex.label.font=2,
 net_plot
 })
  
+                          #### table ####
+joined_table.csv <- read.csv('joined_table.csv')
+output$tbl <- renderDT(datatable(joined_table, colnames = c("Страна", "Источник права (утилити токен)",
+                                          "Источник права (криптовалюта)", "Источник права (токен актив)",
+                                          "Деление на виды токенов", "Майнинг регулируется", 
+                                          "Название (утилити токены)", "Определение (утилити токены)",
+                                          "Название (криптовалюта)", "Определение (криптовалюта)", 
+                                          "Название (токен актив)", "Определение (токен актив)",
+                                          "Прямое применение законов о цб", "Праовой статус (криптовалюта)", 
+                                          "Правовой статус (утилити токен)","Правовой статус (токен актив)", 
+                                          "Регистрация криптобиржи", "Ограничения на инвест. (утилити)",
+                                          "Инвестирование (утилити токены)","Инвестирование (токены  активы)",
+                                          "Основной регулятор", "Указание на применимое право",
+                                          "Прим. право выпуск (утилити)","Экстерр. прим. (оборот утиити)",
+                                          "Прим. право (криптовалюта)", "Прим. право оборот (токены активы)",  
+                                          "Экстерр. прим. выпуск (токен актив)",  "Экстерр. прим. (криптобиржи)",
+                                          "Прим. право (криптобиржи)"),
+               filter = 'top', options = list(pageLength = 10, autoWidth = FALSE)))
 
 }
 

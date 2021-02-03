@@ -43,10 +43,10 @@ tabItem(tabName = "map",
         
         # box with map graph comparison
         boxPlus(collapsible = TRUE, 
-            status = "teal", 
-                title = "",
+            status = "teal",
+            title = "Данные по миру",
                 width=5,
-               withSpinner(plotlyOutput("main_comp", height = 150, width = "100%"),
+               withSpinner(echarts4rOutput("main_comp", height = 150, width = "100%"),
                            type = 3))),
         
         fluidRow(
@@ -224,7 +224,7 @@ tabItem(tabName = "compare",
             title = "Сравнение законодательства",
             collapsible = TRUE,
             status = "teal",
-            withSpinner(plotlyOutput("plot1", height = 240),
+            withSpinner(echarts4rOutput("plot1", height = 240),
                         type = 3)),
           
                                   #### Time chart ####
@@ -288,7 +288,7 @@ boxPlus(
 
                          #### Methodology ####
 tabItem(tabName = "method",
-               boxPlus())
+        DTOutput('tbl'))
 
 
 

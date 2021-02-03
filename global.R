@@ -19,7 +19,9 @@ library(shinyjs)
 library(shinydashboardPlus)
 library(shinycssloaders)
 library(plotly)
+library(highcharter)
 library(shinyWidgets )
+library(echarts4r)
 source("common_table.R")
 
 #css for checkboxinput columns
