@@ -412,7 +412,7 @@ joined_table <- read.csv('joined_table.csv')[-1]
 #make as factor for each column
 joined_table[sapply(joined_table, is.character)] <- lapply(joined_table[sapply(joined_table, 
                                                                                is.character)], as.factor)
-output$tbl <- renderDT(datatable(joined_table, 
+output$tbl <- renderDT({datatable(joined_table, rownames = FALSE,
                                  colnames = c("Страна", "Источник права (утилити токен)",
                                                             "Источник права (криптовалюта)", "Источник права (токен актив)",
                                                             "Деление на виды токенов", "Майнинг регулируется", 
@@ -430,14 +430,14 @@ output$tbl <- renderDT(datatable(joined_table,
                                                             "Экстерр. прим. выпуск (токен актив)",  "Экстерр. прим. (криптобиржи)",
                                                             "Прим. право (криптобиржи)"),
                                  filter = 'top', options = list(pageLength = 10, scrollX = TRUE, autoWidth = TRUE, 
-                                columnDefs = list(list(targets = c(16,17,19, 21, 7),
+                                columnDefs = list(list(targets = c(15,16,18, 20, 6),
                                   render = JS("function(data, type, row, meta) {",
                          "return type === 'display' && data.length > 10 ?",
                     "'<span title=\"' + data + '\">' + data.substr(0, 15) + '...</span>' : data;",
                                  "}")),
-              list(width = '100px', targets = c(16,17,19)),
-                list(className = 'dt-center', targets = c(1:27)))))
-)
+              list(width = '100px', targets = c(15,16,18)),
+                list(className = 'dt-center', targets = c(0:26)))))
+})
 
 }
 
