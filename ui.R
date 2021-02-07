@@ -15,7 +15,7 @@ sidebar = dashboardSidebar(
             ),
             menuItem("Графы", tabName = "graphs", icon = icon("globe")
             ),
-            menuItem("Методология", tabName = "method", icon = icon("globe")
+            menuItem("Таблица", tabName = "table", icon = icon("globe")
         
         ))),
                                         ### Main Body ###
@@ -287,7 +287,7 @@ boxPlus(
 
 
                          #### Methodology ####
-tabItem(tabName = "method",
+tabItem(tabName = "table",
         DTOutput('tbl'))
 
 
