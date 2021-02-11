@@ -345,6 +345,9 @@ p
 
 
                         #### network graph ####
+observe_helpers(withMathJax = TRUE,
+                help_dir = 'helpfiles')
+
 test_t <- filter(ico_common, !is.na(legal_source_utility))
 
 # find all NA and replace them with 0

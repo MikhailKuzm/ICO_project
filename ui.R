@@ -28,18 +28,25 @@ sidebar = dashboardSidebar(
 tabItems(
 tabItem(tabName = "map",
         fluidRow(
-        gradientBox( title = "Раскрасить страны", 
+          boxPlus(title = "Раскрасить страны",
+                  collapsible = TRUE, 
+                  status = "teal",
           icon = "fa fa-paint-brush",
           dropdown_icon = "wrench",
-          gradientColor = "teal",
           boxToolSize = "sm",
           width = 7,
           height = 210,
-          footer = selectInput("pal_but", label = "", width = "900px",
-                                choices = list("Регулирование Майнинга" = 1,
-                                               "Применение законодательства о цб" = 2, 
-                                               "Свободный оборот криптовалют" = 3), 
-                                selected = 1)),
+          awesomeRadio(
+            inputId = "pal_but",
+            label = "",
+            choices =list("Регулирование Майнинга" = 1,
+                          "Применение законодательства о цб" = 2, 
+                          "Свободный оборот криптовалют" = 3),
+            status = "info",
+            inline = TRUE, 
+            checkbox = TRUE
+          )
+          ),
         
         # box with map graph comparison
         boxPlus(collapsible = TRUE, 
@@ -211,7 +218,7 @@ tabItem(tabName = "compare",
                                    'Япония' = 'Япония'),
                        selected = c("Швейцария", 'Китайская Народная Республика',
                                     'Россия','Германия','Япония', 'Белоруссия'),
-                       icon = icon("check-square-o"),
+                       icon = icon("thumbs-up"),
                        animation = "jelly",
                        inline = FALSE, 
                        status = "primary"
@@ -264,7 +271,7 @@ tabItem(tabName = "graphs",
                       'Япония' = 'Япония'),
           selected = c("Швейцария", 'Китайская Народная Республика',
                        'Россия','Германия','Япония', 'Белоруссия'),
-          icon = icon("check-square-o"),
+          icon = icon("thumbs-up"),
           animation = "jelly",
           inline = FALSE, 
           status = "primary"
@@ -277,11 +284,11 @@ boxPlus(
   title = "Сеть соответствия законодательств",
   collapsible = TRUE,
   status = "teal",
-  enable_sidebar = TRUE,
-  sidebar_width = 35,
-  sidebar_start_open = FALSE,
-  withSpinner(plotOutput("plot_network",width = "100%"), type = 3))
-),
+  withSpinner(plotOutput("plot_network",width = "100%"), type = 3)%>% 
+    helper(type = "markdown",
+           content = "network_method",
+           size = "l")
+  )),
 
                               
 
