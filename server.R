@@ -12,11 +12,27 @@ pal1 <- reactive({
             pal <- colorFactor(palette = c("green", "red"),
                                domain = ico_common$direct_application_of_securities_legislation,
                                na.color = "#808080")
-      }else{ 
+      }else if (input$pal_but == 3) {
    pal <- colorFactor(palette = c("green", "red"), 
                       domain = ico_common$payment_for_goods_and_services_in_cryptocurrency,
                       na.color = "#808080")
-}
+      }else if (input$pal_but == 4) {
+        pal <- colorFactor(palette = c("red", "green"), 
+                           domain = ico_common$legal_source_utility,
+                           na.color = "#808080")
+      }else if (input$pal_but == 5) {
+        pal <- colorFactor(palette = c("red", "green"), 
+                           domain = ico_common$legal_source_cryptocurrency,
+                           na.color = "#808080") 
+      }else if (input$pal_but == 6) {
+        pal <- colorFactor(palette = c("red", "green"), 
+                           domain = ico_common$legal_source_assets,
+                           na.color = "#808080") 
+      }else if (input$pal_but == 7) {
+        pal <- colorFactor(palette = c("red", "green"), 
+                           domain = ico_common[,25],
+                           na.color = "#808080")
+      }
  pal
 })
                         #### Make argument for pal() function ####
@@ -25,8 +41,16 @@ col_type <- reactive({
     x <- ico_common$mining_is_regulated
   } else if (input$pal_but == 2){
       x <- ico_common$direct_application_of_securities_legislation
-    }else{
+    }else if (input$pal_but == 3){
     x <- ico_common$payment_for_goods_and_services_in_cryptocurrency
+  }else if (input$pal_but == 4){
+    x <- ico_common$legal_source_utility
+  }else if (input$pal_but == 5){
+    x <- ico_common$legal_source_cryptocurrency
+  }else if (input$pal_but == 6){
+    x <- ico_common$legal_source_assets
+  }else if (input$pal_but == 7){
+    x <- ico_common$e-money_law
   }
   x
 })
@@ -55,7 +79,7 @@ model <-  e_charts(num_gen(), names)
 e_pie(model, n, radius = c("50%", "70%"))%>%
   e_tooltip(formatter =htmlwidgets::JS("
                         function(params){return(params.value + ' %')}")) %>%
-  e_legend(trigger ="axis",  top = 1)
+  e_legend(trigger ="axis",   bottom = 1)
 })
 
 
