@@ -29,7 +29,7 @@ source("common_table.R")
 #css for checkboxinput columns
 tweaks <- list(tags$head(tags$style(HTML("
                                  .multicol { 
-                                   height: 200px;
+                                   height: 210px;
                                    -webkit-column-count: 5; /* Chrome, Safari, Opera */ 
                                    -moz-column-count: 5;    /* Firefox */ 
                                    column-count: 5; 
@@ -38,3 +38,17 @@ tweaks <- list(tags$head(tags$style(HTML("
                                  } 
                                  ")) 
   ))
+
+tweaks2 <- list(tags$head(tags$style(HTML("
+                                 .multicol {
+                                 columns: 2 14em;
+                                 
+                                 
+                                 } 
+                                 ")) 
+))
+
+
+
+
+
