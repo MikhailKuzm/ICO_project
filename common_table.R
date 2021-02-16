@@ -4,6 +4,7 @@ library(readxl)
 library(janitor)
 
 my_shape <- readRDS("my_shape")
+my_shape@data$NAME_RU[223] <- "Остров Мэн"
 ico_common <- read_excel("./ico_project.xlsx", sheet = 1)
 ico_applicable <- read_excel("./ico_project.xlsx", sheet = 3)
 ico_time <- read_excel("./ico_project.xlsx", sheet = 5)
