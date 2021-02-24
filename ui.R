@@ -204,15 +204,13 @@ tabItem(tabName = "map",
                                   text-align:center; font-size: 15px;}")))))
     )))
 ),
-                                #### Comparison ####
+                                #### Comparison PAGE ####
 tabItem(tabName = "compare",
-        box(tweaks,
+        boxPlus(collapsible = TRUE,
             width  = 12,
-            height = 255,
+            status = "teal",
             title = "Выберите страны для анализа", 
-            tags$div(align = 'left', 
-                     class = 'multicol', 
-                     prettyCheckboxGroup(
+                     pickerInput(
                        inputId = "compare_c",
                        label = NULL,
                        choices = c('Австрия' = 'Австрия',
@@ -241,11 +239,10 @@ tabItem(tabName = "compare",
                                    'Эстония' = 'Эстония',
                                    'Япония' = 'Япония'),
                        selected = c("Швейцария", 'Германия'),
-                       icon = icon("thumbs-up"),
-                       animation = "jelly",
-                       inline = FALSE, 
-                       status = "primary"
-                     ))),
+                       options = list(
+                         `actions-box` = TRUE), 
+                       multiple = TRUE
+                     )),
         
         
                                  #### Circle bar ####
@@ -271,16 +268,13 @@ tabItem(tabName = "compare",
         
         
                             
-                          #### Network comparison ####
+                          #### Network comparison PAGE ####
 tabItem(tabName = "graphs",  
-        boxPlus(tweaks,
-            collapsible = TRUE,
+        boxPlus(collapsible = TRUE,
           width  = 12,
-          height = 255,
+          status = "teal",
           title = "Выберите страны для анализа", 
-            tags$div(align = 'left', 
-                     class = 'multicol', 
-                     prettyCheckboxGroup(
+          pickerInput(
                         inputId = "network_1",
                         label = NULL,
           choices = c('Австрия' = 'Австрия',
@@ -310,14 +304,12 @@ tabItem(tabName = "graphs",
                       'Япония' = 'Япония'),
           selected = c("Швейцария", 'Россия','Германия','Белиз','Япония', 
                        'Люксембург','Остров Мэн', 'Белоруссия'),
-          icon = icon("thumbs-up"),
-          animation = "jelly",
-          inline = FALSE, 
-          status = "primary"
-        ))),
+          options = list(
+            `actions-box` = TRUE), 
+          multiple = TRUE
+        )),
         
-        
-        
+    
 boxPlus(
   width = 12,
   title = "Сеть соответствия законодательств",
@@ -332,7 +324,7 @@ boxPlus(
                               
 
 
-                         #### Methodology ####
+                         #### Table PAGE ####
 tabItem(tabName = "table",
         DTOutput('tbl'))
 
