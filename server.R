@@ -309,18 +309,18 @@ result_ab <-c()
 # make reactive for matched and unmatched values for circle plot
 compar_1 <- reactive({
   toMatch <-c(input$compare_c)
-  for (i in c(5:7, 9, 11, 13:16,18:24)){
+  for (i in c(5:7, 9, 11, 13:16,18:25)){
     x <- ico_common[c(grep(paste(toMatch,collapse="|"), ico_common$country)), i]
     y <- length(x) - length(unique(x)) # the same values
     y2 <- length(x)- y # different values
     result_ab <- c(result_ab, rep(c("Совпадения", "Несовпадения"), times=c(y,y2)))
 }
-for (i in c(2:5, 8, 9,11)){
-  x <- ico_common[c(grep(paste(toMatch,collapse="|"), ico_common$country)), i]
-  y <- length(x) - length(unique(x)) # the same values
-  y2 <- length(x)- y # different values
-  result_ab <- c(result_ab, rep(c("Совпадения", "Несовпадения"), times=c(y,y2)))
-}
+#for (i in c(2:5, 8, 9,11)){
+#  x <- ico_common[c(grep(paste(toMatch,collapse="|"), ico_common$country)), i]
+#  y <- length(x) - length(unique(x)) # the same values
+#  y2 <- length(x)- y # different values
+#  result_ab <- c(result_ab, rep(c("Совпадения", "Несовпадения"), times=c(y,y2)))
+#}
             #### create a table for comparative plot for countries ####
 ab_table <- data.frame("letter" = c("Совпадения", "Несовпадения"), 
                        "number" = c(length(result_ab[result_ab=="Совпадения"]),

@@ -252,7 +252,10 @@ tabItem(tabName = "compare",
             collapsible = TRUE,
             status = "teal",
             withSpinner(echarts4rOutput("plot1", height = 240),
-                        type = 3)),
+                        type = 3)%>% 
+              helper(type = "markdown",
+                     content = "comp_circlebar_method",
+                     size = "l")),
           
                                   #### Time chart ####
           boxPlus(
@@ -319,7 +322,9 @@ boxPlus(
     helper(type = "markdown",
            content = "network_method",
            size = "l")
-  )),
+  )
+
+),
 
                               
 
