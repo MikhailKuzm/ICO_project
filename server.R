@@ -30,7 +30,7 @@ pal1 <- reactive({
                            na.color = "#808080") 
       }else if (input$pal_but == 7) {
         pal <- colorFactor(palette = c("red", "green"), 
-                           domain = ico_common[,25],
+                           domain = ico_common$'e-money_law',
                            na.color = "#808080")
       }
  pal
@@ -50,33 +50,39 @@ col_type <- reactive({
   }else if (input$pal_but == 6){
     x <- ico_common$legal_source_assets
   }else if (input$pal_but == 7){
-    x <- ico_common$e-money_law
+    x <- ico_common$'e-money_law'
   }
   x
 })
-                        #### make comparison graph for map ####
+                        #### countries choice for donat chart ####
 num_gen  <- reactive({ 
   if (input$pal_but == 1){
-    x <- "mining_is_regulated"
+    x <- ico_common$mining_is_regulated
   } else if (input$pal_but == 2){
-    x <- "direct_application_of_securities_legislation"
-  }else{
-    x <- "payment_for_goods_and_services_in_cryptocurrency"
+    x <- ico_common$direct_application_of_securities_legislation
+  }else if (input$pal_but == 3){
+    x <- ico_common$payment_for_goods_and_services_in_cryptocurrency
+  }else if (input$pal_but == 4){
+    x <- ico_common$legal_source_utility
+  }else if (input$pal_but == 5){
+    x <- ico_common$legal_source_cryptocurrency
+  }else if (input$pal_but == 6){
+    x <- ico_common$legal_source_assets
+  }else if (input$pal_but == 7){
+    x <- ico_common$'e-money_law'
   }
-  # make small table for graph with name and frequncy
-  test <- filter (ico_common, !is.na(get(x)))
-  num_gen <- data.frame(names = unique(test[,x]),
-                        n = as.data.frame(test %>% group_by (get(x)) %>%
-                                            summarise(n = n()))[2])
+  num_gen <- table(x)
+  num_gen <- as.data.frame(num_gen)
+  
 #find percent of features among all cointies
-num_gen$n <- round(num_gen$n/sum(num_gen$n)*100)
+num_gen$Freq <- round(num_gen$Freq/sum(num_gen$Freq)*100)
 num_gen
 })
 
-
+                        #### donat chart for map page ####
 output$main_comp <-  renderEcharts4r({
-model <-  e_charts(num_gen(), names)  
-e_pie(model, n, radius = c("50%", "70%"))%>%
+model <-  e_charts(num_gen(), x)  
+e_pie(model, Freq, radius = c("50%", "70%"))%>%
   e_tooltip(formatter =htmlwidgets::JS("
                         function(params){return(params.value + ' %')}")) %>%
   e_legend(trigger ="axis",   bottom = 1)
@@ -95,10 +101,30 @@ labels <- reactive ({
              "<p>", "Применение законодательства о цб: ",
              ico_common$direct_application_of_securities_legislation, "</p>",
              sep = "")
-     } else {
+     } else if (input$pal_but == 3){
        paste ("<p>", ico_common$country, "</p>",
               "<p>", "Использование криптовалют в потребительских целях: ",
               ico_common$payment_for_goods_and_services_in_cryptocurrency, "</p>",
+              sep = "")
+     } else if (input$pal_but == 4){
+       paste ("<p>", ico_common$country, "</p>",
+              "<p>", "Источник права (утилити токен): ",
+              ico_common$legal_source_utility, "</p>",
+              sep = "")
+     } else if (input$pal_but == 5){
+       paste ("<p>", ico_common$country, "</p>",
+              "<p>", "Источник права (криптовалюта): ",
+              ico_common$legal_source_cryptocurrency, "</p>",
+              sep = "")
+     } else if (input$pal_but == 6){
+       paste ("<p>", ico_common$country, "</p>",
+              "<p>", "Источник права (токен-актив): ",
+              ico_common$legal_source_assets, "</p>",
+              sep = "")
+     } else if (input$pal_but == 7){
+       paste ("<p>", ico_common$country, "</p>",
+              "<p>", "Применение закон об электронных деньгах: ",
+              ico_common$'e-money_law', "</p>",
               sep = "")
      }
 })
@@ -337,9 +363,6 @@ e_pie(model, number, radius = c("50%", "70%"))%>%
                         function(params){return(params.value + ' %')}")) %>%
   e_legend(trigger ="axis",  bottom = 1)
 })
-
-
-
 
 
 

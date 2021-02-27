@@ -264,12 +264,13 @@ tabItem(tabName = "compare",
             collapsible = TRUE,
             status = "teal",
             withSpinner(plotlyOutput("plot2", height = 240, width = "100%"),
-                        type = 3))
+                        type = 3)%>% 
+            helper(type = "markdown",
+                   content = "comp_time_method",
+                   size = "l"))
           )),
     
                               
-        
-        
                             
                           #### Network comparison PAGE ####
 tabItem(tabName = "graphs",  
