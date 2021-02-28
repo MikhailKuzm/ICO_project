@@ -26,6 +26,8 @@ library(shinyWidgets )
 library(echarts4r)
 source("common_table.R")
 
+
+
 #css for checkboxinput columns
 tweaks <- list(tags$head(tags$style(HTML("
                                  .multicol { 

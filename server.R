@@ -341,12 +341,7 @@ compar_1 <- reactive({
     y2 <- length(x)- y # different values
     result_ab <- c(result_ab, rep(c("Совпадения", "Несовпадения"), times=c(y,y2)))
 }
-#for (i in c(2:5, 8, 9,11)){
-#  x <- ico_common[c(grep(paste(toMatch,collapse="|"), ico_common$country)), i]
-#  y <- length(x) - length(unique(x)) # the same values
-#  y2 <- length(x)- y # different values
-#  result_ab <- c(result_ab, rep(c("Совпадения", "Несовпадения"), times=c(y,y2)))
-#}
+
             #### create a table for comparative plot for countries ####
 ab_table <- data.frame("letter" = c("Совпадения", "Несовпадения"), 
                        "number" = c(length(result_ab[result_ab=="Совпадения"]),
@@ -388,6 +383,26 @@ p <- time_number() %>%
 p <- ggplotly(p, tooltip = "text") %>% 
   layout(legend = list(orientation = "h", xanchor = "center", x = 0.5, y = -0.3))
 p  
+})
+
+
+                        
+                        ##### words comparison ####
+output$words <- renderHighchart({ 
+  z = as.data.frame(table(ico_common[,input$token_term]))
+  z = z[order(z$Freq, decreasing = TRUE),]
+  z$Freq = z$Freq/sum(z$Freq)*100  
+  
+  highchart() %>%
+    hc_xAxis(categories = z$Var1) %>%
+    hc_add_series(data = z$Freq, type = "bar", colorByPoint = TRUE) %>%
+    hc_tooltip(crosshairs = TRUE,
+               pointFormat = "<b>: {point.y}%</b>",
+               borderWidth = 3,
+               sort = TRUE,
+               table = TRUE
+    )  %>%
+    hc_legend(enabled = F)  
 })
 
 

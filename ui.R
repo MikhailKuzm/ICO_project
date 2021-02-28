@@ -6,7 +6,7 @@ ui <-dashboardPagePlus(
                         enable_rightsidebar = FALSE,
                         rightSidebarIcon = "gears"),
 sidebar = dashboardSidebar(
-  disable = TRUE,
+  disable = FALSE,
         width = 240,
         sidebarMenu(
             menuItem("Карта", tabName = "map", 
@@ -268,9 +268,39 @@ tabItem(tabName = "compare",
             helper(type = "markdown",
                    content = "comp_time_method",
                    size = "l"))
-          )),
+          ),
     
-                              
+                      ##### Words chart #####
+
+boxPlus(
+  width = 12,
+  title = "Частота используемых терминов", 
+  closable = FALSE,
+  collapsible = TRUE,
+  status = "teal",
+dropdown(
+  tags$h3("Выберите термин"),
+  pickerInput(inputId = 'token_term',
+              choices = c('Утилити токен' = 'name_utility',
+                            'Криптовалюта' = 'name_cryptocurrency',
+                            'Токен-актив' = 'name_assets'),
+              options = list(`style` = "btn-info")),
+  style = "jelly", icon = icon("gear"),
+  status = "danger", width = "300px",
+  animate = animateOptions(
+    enter = animations$specials$jackInTheBox,
+    exit = animations$fading_exits$fadeOutRightBig
+  )
+),
+highchartOutput('words')
+
+)
+),
+
+
+
+
+
                             
                           #### Network comparison PAGE ####
 tabItem(tabName = "graphs",  
