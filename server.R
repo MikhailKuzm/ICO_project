@@ -360,12 +360,15 @@ e_pie(model, number, radius = c("50%", "70%"))%>%
 })
 
 
-
                         #### make time plot for countries with ggplotly####
+
 number_ico <- read.csv("number_ico.csv")
+number_ico <- number_ico[,c("name","value","active","place")]
+number_ico$value <- ymd(number_ico$value)
+
 time_number <- reactive ({
   toMatch1 <-c(input$compare_c) #multyinput
-  time_number <- comcontr[c(grep(paste(toMatch1,collapse="|"), comcontr$place)), ]
+  time_number <- number_ico[c(grep(paste(toMatch1,collapse="|"), number_ico$place)), ]
   time_number
 })
 
